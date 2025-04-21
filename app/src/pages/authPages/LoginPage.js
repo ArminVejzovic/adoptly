@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './auth.css';
 
 const LoginPage = () => {
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState({});
   const navigate = useNavigate();
@@ -15,42 +18,38 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, form);
+      const data = res.data;
 
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
-        localStorage.setItem('username', data.username);
-        switch (data.role) {
-          case 'admin':
-            navigate('/admin-dashboard');
-            break;
-          case 'owner':
-            navigate('/owner-dashboard');
-            break;
-          case 'volunteer':
-            navigate('/volunteer-dashboard');
-            break;
-          default:
-            navigate('/user-dashboard');
-        }
-      } else {
-        if (data.field === 'email') {
-          setError({ email: data.message });
-        } else if (data.field === 'password') {
-          setError({ password: data.message });
-        } else {
-          setError({ general: data.message });
-        }
-        setTimeout(() => setError({}), 4000);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('role', data.role);
+      localStorage.setItem('username', data.username);
+
+      switch (data.role) {
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'owner':
+          navigate('/owner-dashboard');
+          break;
+        case 'volunteer':
+          navigate('/volunteer-dashboard');
+          break;
+        default:
+          navigate('/user-dashboard');
       }
     } catch (err) {
-      setError({ general: 'Login failed. Please try again.' });
+      const message = err.response?.data?.message || 'Login failed. Please try again.';
+      const field = err.response?.data?.field;
+
+      if (field === 'email') {
+        setError({ email: message });
+      } else if (field === 'password') {
+        setError({ password: message });
+      } else {
+        setError({ general: message });
+      }
+
       setTimeout(() => setError({}), 4000);
     }
   };

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './auth.css';
 
 const RegisterPage = () => {
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -18,23 +21,17 @@ const RegisterPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log('Registering...');
     e.preventDefault();
+    console.log('Registering...');
     try {
-      const res = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        navigate('/login');
-      } else {
-        setError({ general: data.message });
-        setTimeout(() => setError({}), 4000);
-      }
+      await axios.post(`${BASE_URL}/api/auth/register`, form);
+      navigate('/login');
     } catch (err) {
-      setError({ general: 'Registration failed. Try again.' });
+      if (err.response && err.response.data && err.response.data.message) {
+        setError({ general: err.response.data.message });
+      } else {
+        setError({ general: 'Registration failed. Try again.' });
+      }
       setTimeout(() => setError({}), 4000);
     }
   };
