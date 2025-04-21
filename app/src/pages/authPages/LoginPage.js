@@ -37,7 +37,7 @@ const LoginPage = () => {
             navigate('/volunteer-dashboard');
             break;
           default:
-            navigate('/dashboard');
+            navigate('/user-dashboard');
         }
       } else {
         if (data.field === 'email') {
