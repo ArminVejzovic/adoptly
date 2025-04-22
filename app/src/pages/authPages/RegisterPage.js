@@ -35,7 +35,7 @@ const RegisterPage = () => {
     }
 
     try {
-      const { confirmPassword, ...dataToSend } = form; // remove confirmPassword
+      const { confirmPassword, ...dataToSend } = form;
       await axios.post(`${BASE_URL}/api/auth/register`, dataToSend);
       navigate('/login');
     } catch (err) {
