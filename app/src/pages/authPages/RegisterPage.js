@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './auth.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const RegisterPage = () => {
   const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -10,9 +11,12 @@ const RegisterPage = () => {
     username: '',
     email: '',
     password: '',
+    confirmPassword: '',
     role: 'user',
   });
   const [error, setError] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,11 +27,19 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Registering...');
+
+    if (form.password !== form.confirmPassword) {
+      setError({ confirmPassword: 'Passwords do not match' });
+      setTimeout(() => setError({}), 4000);
+      return;
+    }
+
     try {
-      await axios.post(`${BASE_URL}/api/auth/register`, form);
+      const { confirmPassword, ...dataToSend } = form; // remove confirmPassword
+      await axios.post(`${BASE_URL}/api/auth/register`, dataToSend);
       navigate('/login');
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
+      if (err.response?.data?.message) {
         setError({ general: err.response.data.message });
       } else {
         setError({ general: 'Registration failed. Try again.' });
@@ -55,19 +67,52 @@ const RegisterPage = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className={error.general ? 'input-error' : ''}
-          onChange={handleChange}
-          required
-        />
+
+        {/* Password */}
+        <div className="password-container">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            placeholder="Password"
+            className={error.general ? 'input-error' : ''}
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="button"
+            className="show-hide-btn"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+
+        {/* Confirm Password */}
+        <div className="password-container">
+          <input
+            type={showConfirm ? 'text' : 'password'}
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            className={error.confirmPassword ? 'input-error' : ''}
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="button"
+            className="show-hide-btn"
+            onClick={() => setShowConfirm(!showConfirm)}
+          >
+            {showConfirm ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+        {error.confirmPassword && <p className="error-msg">{error.confirmPassword}</p>}
+
         <select name="role" onChange={handleChange}>
-          <option value="user">Usvojitelj</option>
-          <option value="owner">Vlasnik</option>
-          <option value="volunteer">Volonter</option>
+          <option value="user">Animal Adopter</option>
+          <option value="owner">Animal Owner</option>
+          <option value="volunteer">Adoptly Volunteer</option>
         </select>
+
         {error.general && <p className="error-msg">{error.general}</p>}
         <button type="submit">Register</button>
       </form>

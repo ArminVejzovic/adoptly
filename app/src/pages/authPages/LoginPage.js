@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './auth.css';
 
@@ -8,7 +9,30 @@ const LoginPage = () => {
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  // ✅ Automatski redirect ako je već logovan
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    if (token && role) {
+      switch (role) {
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'owner':
+          navigate('/owner-dashboard');
+          break;
+        case 'volunteer':
+          navigate('/volunteer-dashboard');
+          break;
+        default:
+          navigate('/user-dashboard');
+      }
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,6 +41,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const res = await axios.post(`${BASE_URL}/api/auth/login`, form);
       const data = res.data;
@@ -69,17 +94,26 @@ const LoginPage = () => {
         />
         {error.email && <p className="error-msg">{error.email}</p>}
 
-        <input
-          className={error.password ? 'input-error' : ''}
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
+        <div className="password-container">
+          <input
+            className={error.password ? 'input-error' : ''}
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="button"
+            className="show-hide-btn"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
         {error.password && <p className="error-msg">{error.password}</p>}
-
         {error.general && <p className="error-msg">{error.general}</p>}
+
         <button type="submit">Login</button>
       </form>
     </div>

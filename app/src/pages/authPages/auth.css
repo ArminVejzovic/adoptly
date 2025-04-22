@@ -59,3 +59,35 @@
     margin-bottom: 15px;
     text-align: center;
   }
+
+  .password-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .password-container input {
+    width: 100%;
+    padding-right: 80px;
+    box-sizing: border-box;
+    height: 40px;
+  }
+  
+  .show-hide-btn {
+    position: absolute;
+    top: 36%;
+    right: 12px;
+    transform: translateY(-50%);
+    background: #2a9d8f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    line-height: 1;
+    height: auto;
+  }
+  
+  .show-hide-btn:hover {
+    background-color: #21867a;
+  }
