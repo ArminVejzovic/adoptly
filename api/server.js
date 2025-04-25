@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.js";
 import cors from 'cors';
 
 import authRoutes from './routes/authRoute.js';
+import ownerRoutes from './routes/owner/addAnimalRoute.js';
 
 dotenv.config();
 
@@ -15,7 +16,11 @@ app.use(cors({
     credentials: true
 }));
 
+
+
 app.use('/api/auth', authRoutes);
+app.use('/api/owner', ownerRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 

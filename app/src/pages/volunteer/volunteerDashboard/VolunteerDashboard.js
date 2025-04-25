@@ -1,5 +1,5 @@
 import React from 'react'
-import Logout from '../../components/logout/Logout.js'
+import Logout from '../../../components/logout/Logout.js'
 
 
 const VolunteerDashboard = () => {

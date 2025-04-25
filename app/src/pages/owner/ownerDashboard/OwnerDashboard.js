@@ -1,0 +1,42 @@
+import React from 'react';
+import { FaPlusCircle, FaPaw, FaInbox, FaChartBar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import Logout from '../../../components/logout/Logout';
+import './OwnerDashboard.css';
+
+const OwnerDashboard = () => {
+  const dashboardItems = [
+    {
+      title: 'Dodaj životinju',
+      icon: <FaPlusCircle size={40} />,
+      link: '/add-animal'
+    },
+    {
+      title: 'Profil',
+      icon: <FaPlusCircle size={40} />,
+      link: '/profile'
+    },
+    {
+      title: 'Moje životinje',
+      icon: <FaPaw size={40} />,
+      link: '/my-animals'
+    }
+  ];
+
+  return (
+    <div className="dashboard-container">
+      <h2>Owner Dashboard</h2>
+      <div className="dashboard-grid">
+        {dashboardItems.map((item, idx) => (
+          <Link to={item.link} key={idx} className="dashboard-item">
+            {item.icon}
+            <span>{item.title}</span>
+          </Link>
+        ))}
+      </div>
+      <Logout />
+    </div>
+  );
+};
+
+export default OwnerDashboard;

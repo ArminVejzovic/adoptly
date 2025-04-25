@@ -2,11 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/landingPage/LandingPage.js';
 import LoginPage from './pages/authPages/LoginPage.js';
 import RegisterPage from './pages/authPages/RegisterPage.js';
-import UserDashboard from './pages/userDashboard/UserDashboard.js';
-import OwnerDashboard from './pages/ownerDashboard/OwnerDashboard.js';
-import VolunteerDashboard from './pages/volunteerDashboard/VolunteerDashboard.js';
-import AdminDashboard from './pages/adminDashboard/AdminDashboard.js';
-import GuestDashboard from './pages/guestDashboard/GuestDashboard.js';
+import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
+import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
+import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
+import VolunteerDashboard from './pages/volunteer/volunteerDashboard/VolunteerDashboard.js';
+import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
+import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
 import ProtectedRoute from './routes/ProtectedRoute';
 import PublicRoute from './routes/PublicRoute';
@@ -44,6 +45,7 @@ function App() {
           }
         />
 
+
         <Route
           path="/owner-dashboard"
           element={
@@ -52,6 +54,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+          <Route
+          path="/add-animal"
+          element={
+            <ProtectedRoute allowedRoles={['owner']}>
+              <AddAnimal />
+            </ProtectedRoute>
+          } />
 
         <Route
           path="/volunteer-dashboard"
