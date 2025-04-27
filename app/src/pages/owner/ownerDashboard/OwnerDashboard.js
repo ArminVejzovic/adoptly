@@ -7,17 +7,17 @@ import './OwnerDashboard.css';
 const OwnerDashboard = () => {
   const dashboardItems = [
     {
-      title: 'Dodaj životinju',
+      title: 'Add Animal',
       icon: <FaPlusCircle size={40} />,
       link: '/add-animal'
     },
     {
-      title: 'Profil',
+      title: 'Profile',
       icon: <FaPlusCircle size={40} />,
       link: '/profile'
     },
     {
-      title: 'Moje životinje',
+      title: 'My Animals Page',
       icon: <FaPaw size={40} />,
       link: '/my-animals'
     }

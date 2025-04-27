@@ -5,6 +5,7 @@ import cors from 'cors';
 
 import authRoutes from './routes/authRoute.js';
 import ownerRoutes from './routes/owner/addAnimalRoute.js';
+import animalRoutes from './routes/owner/myAnimalsRoute.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cors({
 
 app.use('/api/auth', authRoutes);
 app.use('/api/owner', ownerRoutes);
+app.use('/api/owner', animalRoutes);
 
 
 const PORT = process.env.PORT || 3000;

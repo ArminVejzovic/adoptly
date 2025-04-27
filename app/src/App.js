@@ -2,11 +2,17 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/landingPage/LandingPage.js';
 import LoginPage from './pages/authPages/LoginPage.js';
 import RegisterPage from './pages/authPages/RegisterPage.js';
+
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
+
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
+import MyAnimals from './pages/owner/myAnimals/MyAnimals.js';
+
 import VolunteerDashboard from './pages/volunteer/volunteerDashboard/VolunteerDashboard.js';
+
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
+
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
 import ProtectedRoute from './routes/ProtectedRoute';
@@ -62,6 +68,14 @@ function App() {
               <AddAnimal />
             </ProtectedRoute>
           } />
+
+          <Route
+            path="/my-animals"
+            element={
+              <ProtectedRoute allowedRoles={['owner']}>
+                <MyAnimals />
+              </ProtectedRoute>
+            } />
 
         <Route
           path="/volunteer-dashboard"
