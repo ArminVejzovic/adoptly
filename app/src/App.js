@@ -3,11 +3,14 @@ import LandingPage from './pages/landingPage/LandingPage.js';
 import LoginPage from './pages/authPages/LoginPage.js';
 import RegisterPage from './pages/authPages/RegisterPage.js';
 
+import Profile from './pages/profile/Profile.js';
+
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
 
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
 import MyAnimals from './pages/owner/myAnimals/MyAnimals.js';
+import AdoptionRequests from './pages/owner/adoptionRequests/AdoptionRequests.js';
 
 import VolunteerDashboard from './pages/volunteer/volunteerDashboard/VolunteerDashboard.js';
 
@@ -43,6 +46,15 @@ function App() {
         />
 
         <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={['user', 'owner', 'volunteer', 'admin']}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/user-dashboard"
           element={
             <ProtectedRoute allowedRoles={['user']}>
@@ -74,6 +86,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['owner']}>
                 <MyAnimals />
+              </ProtectedRoute>
+            } />
+
+          <Route
+            path="/adoption-requests"
+            element={
+              <ProtectedRoute allowedRoles={['owner']}>
+                <AdoptionRequests />
               </ProtectedRoute>
             } />
 

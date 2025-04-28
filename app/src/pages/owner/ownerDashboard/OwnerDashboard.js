@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlusCircle, FaPaw, FaInbox, FaChartBar } from 'react-icons/fa';
+import { FaPlusCircle, FaPaw, FaInbox, FaChartBar, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
 import './OwnerDashboard.css';
@@ -13,13 +13,18 @@ const OwnerDashboard = () => {
     },
     {
       title: 'Profile',
-      icon: <FaPlusCircle size={40} />,
+      icon: <FaUser size={40} />,
       link: '/profile'
     },
     {
       title: 'My Animals Page',
       icon: <FaPaw size={40} />,
       link: '/my-animals'
+    }, 
+    {
+      title: 'Adoption Requests',
+      icon: <FaPaw size={40} />,
+      link: '/adoption-requests'
     }
   ];
 
