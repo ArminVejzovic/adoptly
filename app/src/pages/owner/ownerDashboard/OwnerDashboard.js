@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlusCircle, FaPaw, FaInbox, FaChartBar, FaUser } from 'react-icons/fa';
+import { FaPlusCircle, FaPaw, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
 import './OwnerDashboard.css';

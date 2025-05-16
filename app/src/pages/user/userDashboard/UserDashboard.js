@@ -1,12 +1,47 @@
-import React from 'react'
-import Logout from '../../../components/logout/Logout.js'
+import React from 'react';
+import { FaPlusCircle, FaPaw, FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import Logout from '../../../components/logout/Logout';
+import './UserDashboard.css';
 
 const UserDashboard = () => {
+  const dashboardItems = [
+    {
+      title: 'Adopt Animal',
+      icon: <FaPlusCircle size={40} />,
+      link: '/available-animals'
+    },
+    {
+      title: 'Profile',
+      icon: <FaUser size={40} />,
+      link: '/profile'
+    },
+    {
+      title: 'My Animals Page',
+      icon: <FaPaw size={40} />,
+      link: '/my-animals'
+    }, 
+    {
+      title: 'Adoption Requests',
+      icon: <FaPaw size={40} />,
+      link: '/adoption-requests'
+    }
+  ];
+
   return (
-    <div>UserDashboard
+    <div className="dashboard-container">
+      <h2>User Dashboard</h2>
+      <div className="dashboard-grid">
+        {dashboardItems.map((item, idx) => (
+          <Link to={item.link} key={idx} className="dashboard-item">
+            {item.icon}
+            <span>{item.title}</span>
+          </Link>
+        ))}
+      </div>
       <Logout />
     </div>
-  )
-}
+  );
+};
 
 export default UserDashboard;

@@ -6,6 +6,7 @@ import RegisterPage from './pages/authPages/RegisterPage.js';
 import Profile from './pages/profile/Profile.js';
 
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
+import AvailableAnimals from './pages/user/availableAnimals/AvailableAnimals.js';
 
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
@@ -60,6 +61,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+          <Route
+            path="/available-animals"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <AvailableAnimals />
+              </ProtectedRoute>
+            }
+          />
 
 
         <Route

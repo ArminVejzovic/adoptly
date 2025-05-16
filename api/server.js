@@ -9,6 +9,7 @@ import animalRoutes from './routes/owner/myAnimalsRoute.js';
 import profileRoutes from './routes/profileRoute.js';
 import adoptionRequestRoute from './routes/user/CreateAdoptionRequestsRoute.js'
 import controlAdoptionRoute from './routes/owner/ControlAdoptionRequestsRoute.js'
+import createAdoptionRequestRoute from './routes/user/CreateAdoptionRequestsRoute.js'
 
 
 
@@ -28,6 +29,7 @@ app.use('/api/owner', animalRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/request-adoption', adoptionRequestRoute);
 app.use('/api/control-adoption', controlAdoptionRoute);
+app.use('/api/adoption', createAdoptionRequestRoute);
 
 
 const PORT = process.env.PORT || 3000;
