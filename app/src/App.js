@@ -12,8 +12,6 @@ import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
 import MyAnimals from './pages/owner/myAnimals/MyAnimals.js';
 import AdoptionRequests from './pages/owner/adoptionRequests/AdoptionRequests.js';
 
-import VolunteerDashboard from './pages/volunteer/volunteerDashboard/VolunteerDashboard.js';
-
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
@@ -48,7 +46,7 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute allowedRoles={['user', 'owner', 'volunteer', 'admin']}>
+            <ProtectedRoute allowedRoles={['user', 'owner', 'admin']}>
               <Profile />
             </ProtectedRoute>
           }
@@ -96,15 +94,6 @@ function App() {
                 <AdoptionRequests />
               </ProtectedRoute>
             } />
-
-        <Route
-          path="/volunteer-dashboard"
-          element={
-            <ProtectedRoute allowedRoles={['volunteer']}>
-              <VolunteerDashboard />
-            </ProtectedRoute>
-          }
-        />
 
         <Route
           path="/admin-dashboard"

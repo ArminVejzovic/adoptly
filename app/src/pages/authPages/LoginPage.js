@@ -25,9 +25,6 @@ const LoginPage = () => {
         case 'owner':
           navigate('/owner-dashboard');
           break;
-        case 'volunteer':
-          navigate('/volunteer-dashboard');
-          break;
         default:
           navigate('/user-dashboard');
       }
@@ -56,9 +53,6 @@ const LoginPage = () => {
           break;
         case 'owner':
           navigate('/owner-dashboard');
-          break;
-        case 'volunteer':
-          navigate('/volunteer-dashboard');
           break;
         default:
           navigate('/user-dashboard');

@@ -110,7 +110,6 @@ const RegisterPage = () => {
         <select name="role" onChange={handleChange}>
           <option value="user">Animal Adopter</option>
           <option value="owner">Animal Owner</option>
-          <option value="volunteer">Adoptly Volunteer</option>
         </select>
 
         {error.general && <p className="error-msg">{error.general}</p>}

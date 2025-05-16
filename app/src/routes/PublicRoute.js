@@ -11,8 +11,6 @@ const PublicRoute = ({ children }) => {
         return <Navigate to="/admin-dashboard" replace />;
       case 'owner':
         return <Navigate to="/owner-dashboard" replace />;
-      case 'volunteer':
-        return <Navigate to="/volunteer-dashboard" replace />;
       default:
         return <Navigate to="/user-dashboard" replace />;
     }

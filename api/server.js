@@ -10,7 +10,7 @@ import profileRoutes from './routes/profileRoute.js';
 import adoptionRequestRoute from './routes/user/CreateAdoptionRequestsRoute.js'
 import controlAdoptionRoute from './routes/owner/ControlAdoptionRequestsRoute.js'
 
-dotenv.config();
+
 
 const app = express();
 
