@@ -7,16 +7,23 @@ const AvailableAnimals = () => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [message, setMessage] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const [commentText, setCommentText] = useState('');
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+
     const fetchAnimals = async () => {
       try {
-        const token = localStorage.getItem('token');
         const res = await axios.get('http://localhost:3000/api/adoption/available-animals', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers
         });
-        setAnimals(res.data);
-        console.log(res.data);
+        const animalsWithStats = await Promise.all(res.data.map(async animal => {
+          const statRes = await axios.get(`http://localhost:3000/api/interact/stats/${animal._id}`);
+          return { ...animal, stats: statRes.data };
+        }));
+        setAnimals(animalsWithStats);
       } catch (err) {
         console.error('Error fetching animals:', err);
       }
@@ -25,10 +32,15 @@ const AvailableAnimals = () => {
     fetchAnimals();
   }, []);
 
+  const bufferToBase64 = (profileImage) => {
+    if (!profileImage?.base64) return null;
+    return `data:${profileImage.contentType};base64,${profileImage.base64}`;
+  };
+
   const handleAdopt = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post(
+      await axios.post(
         'http://localhost:3000/api/adoption/create-adoption-request',
         {
           animalId: selectedAnimal._id,
@@ -46,17 +58,70 @@ const AvailableAnimals = () => {
     }
   };
 
-  const bufferToBase64 = (profileImage) => {
-    if (!profileImage?.base64) return null;
-    return `data:${profileImage.contentType};base64,${profileImage.base64}`;
+  const handleToggleLike = async () => {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.post(`http://localhost:3000/api/interact/like/${selectedAnimal._id}`, {}, { headers });
+    updateStats(selectedAnimal._id);
   };
+
+  const handleToggleWishlist = async () => {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.post(`http://localhost:3000/api/interact/wishlist/${selectedAnimal._id}`, {}, { headers });
+    updateStats(selectedAnimal._id);
+  };
+
+  const fetchComments = async (animalId) => {
+    const res = await axios.get(`http://localhost:3000/api/interact/comments/${animalId}`);
+    setComments(res.data);
+  };
+
+  const handleAddComment = async () => {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.post(
+      `http://localhost:3000/api/interact/comment/${selectedAnimal._id}`,
+      { text: commentText },
+      { headers }
+    );
+    setCommentText('');
+    fetchComments(selectedAnimal._id);
+    updateStats(selectedAnimal._id);
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    await axios.delete(`http://localhost:3000/api/interact/comment/${commentId}`, { headers });
+    fetchComments(selectedAnimal._id);
+    updateStats(selectedAnimal._id);
+  };
+
+  const updateStats = async (animalId) => {
+    const res = await axios.get(`http://localhost:3000/api/interact/stats/${animalId}`);
+    setAnimals(prev =>
+      prev.map(a => (a._id === animalId ? { ...a, stats: res.data } : a))
+    );
+  };
+
+  const openAnimal = async (animal) => {
+    setSelectedAnimal(animal);
+    setMessage('');
+    setFeedback(null);
+    setCommentText('');
+    setComments([]);
+    await fetchComments(animal._id);
+  };
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   return (
     <div className="adoption-gallery">
       <h2>Available Animals for Adoption</h2>
       <div className="animal-grid">
         {animals.map(animal => (
-          <div key={animal._id} className="animal-card" onClick={() => setSelectedAnimal(animal)}>
+          <div key={animal._id} className="animal-card" onClick={() => openAnimal(animal)}>
             {animal.profileImage?.base64 ? (
               <img src={bufferToBase64(animal.profileImage)} alt={animal.name} />
             ) : (
@@ -64,6 +129,11 @@ const AvailableAnimals = () => {
             )}
             <h3>{animal.name}</h3>
             <p>{animal.breed} • {animal.age} years</p>
+            <div className="animal-meta">
+              <span>👍 {animal.stats?.likes || 0}</span>
+              <span>💬 {animal.stats?.comments || 0}</span>
+              <span>💾 {animal.stats?.saves || 0}</span>
+            </div>
           </div>
         ))}
       </div>
@@ -83,6 +153,31 @@ const AvailableAnimals = () => {
             <p><strong>Age:</strong> {selectedAnimal.age}</p>
             <p><strong>Description:</strong> {selectedAnimal.description}</p>
 
+            <div className="actions-row">
+              <button onClick={handleToggleLike}>👍 Like</button>
+              <button onClick={handleToggleWishlist}>💾 Save</button>
+            </div>
+
+            <div className="comment-section">
+              <h3>Comments</h3>
+              <div className="comments-list">
+                {comments.map(comment => (
+                  <div key={comment._id} className="comment-item">
+                    <p><strong>{comment.user?.name || 'User'}:</strong> {comment.text}</p>
+                    {comment.user?._id === user?._id && (
+                      <button className="delete-comment" onClick={() => handleDeleteComment(comment._id)}>🗑️</button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <textarea
+                placeholder="Add a comment..."
+                value={commentText}
+                onChange={e => setCommentText(e.target.value)}
+              />
+              <button onClick={handleAddComment} className="submit-button">Post Comment</button>
+            </div>
+
             <textarea
               placeholder="Message to owner (optional)"
               value={message}
@@ -91,6 +186,8 @@ const AvailableAnimals = () => {
             <button onClick={handleAdopt} className="submit-button">Send Adoption Request</button>
 
             {feedback && <p className="feedback">{feedback}</p>}
+
+            
           </div>
         </div>
       )}
