@@ -17,9 +17,9 @@ const UserDashboard = () => {
       link: '/profile'
     },
     {
-      title: 'My Animals Page',
+      title: 'Wishlist',
       icon: <FaPaw size={40} />,
-      link: '/my-animals'
+      link: '/wishlist-animals'
     }, 
     {
       title: 'Adoption Requests',

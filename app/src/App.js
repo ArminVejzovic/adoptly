@@ -7,6 +7,7 @@ import Profile from './pages/profile/Profile.js';
 
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
 import AvailableAnimals from './pages/user/availableAnimals/AvailableAnimals.js';
+import WishlistAnimals from './pages/user/wishlistAnimals/WishlistAnimals.js';
 
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
@@ -67,6 +68,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['user']}>
                 <AvailableAnimals />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/wishlist-animals"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <WishlistAnimals />
               </ProtectedRoute>
             }
           />
