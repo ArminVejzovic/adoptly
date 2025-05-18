@@ -158,25 +158,32 @@ const AvailableAnimals = () => {
               <button onClick={handleToggleWishlist}>💾 Save</button>
             </div>
 
-            <div className="comment-section">
-              <h3>Comments</h3>
-              <div className="comments-list">
-                {comments.map(comment => (
-                  <div key={comment._id} className="comment-item">
-                    <p><strong>{comment.user?.name || 'User'}:</strong> {comment.text}</p>
-                    {comment.user?._id === user?._id && (
-                      <button className="delete-comment" onClick={() => handleDeleteComment(comment._id)}>🗑️</button>
-                    )}
-                  </div>
-                ))}
-              </div>
-              <textarea
+            <div className="comments-list">
+              {comments.map(comment => (
+                <div key={comment._id} className="comment-item">
+                  <p>
+                    <strong>
+                    {comment.user?.username === localStorage.getItem('username') ? 'Me:' : comment.user?.username || 'User'}
+
+                    </strong>{' '}
+                    {comment.text}
+                  </p>
+                  {comment.user?._id === user?._id && (
+                    <button className="delete-comment" onClick={() => handleDeleteComment(comment._id)}>🗑️</button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="comment-input">
+              <input
+                type="text"
                 placeholder="Add a comment..."
                 value={commentText}
                 onChange={e => setCommentText(e.target.value)}
               />
-              <button onClick={handleAddComment} className="submit-button">Post Comment</button>
-            </div>
+              <button onClick={handleAddComment}>Comment</button>
+            </div>  
 
             <textarea
               placeholder="Message to owner (optional)"

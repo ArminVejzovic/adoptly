@@ -35,8 +35,19 @@ export const addComment = async (req, res) => {
   const { text } = req.body;
   const userId = req.user._id;
 
-  const comment = await Comment.create({ user: userId, animal: animalId, text });
-  res.status(201).json(comment);
+  if (!text || text.trim() === '') {
+    return res.status(400).json({ message: 'Comment text is required.' });
+  }
+
+  const comment = await Comment.create({
+    user: userId,
+    animal: animalId,
+    text
+  });
+
+  const populated = await comment.populate('user', 'username');
+
+  res.status(201).json(populated);
 };
 
 export const deleteComment = async (req, res) => {
@@ -69,7 +80,7 @@ export const getComments = async (req, res) => {
   const { animalId } = req.params;
 
   const comments = await Comment.find({ animal: animalId })
-    .populate('user', 'name')
+    .populate('user', 'username')
     .sort({ createdAt: -1 });
 
   res.json(comments);
