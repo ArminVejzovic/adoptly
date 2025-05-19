@@ -9,6 +9,8 @@ const AvailableAnimals = () => {
   const [feedback, setFeedback] = useState(null);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
+  const [alreadyRequested, setAlreadyRequested] = useState(false);
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -111,6 +113,19 @@ const AvailableAnimals = () => {
     setFeedback(null);
     setCommentText('');
     setComments([]);
+  
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+  
+    try {
+      const res = await axios.get(`http://localhost:3000/api/adoption/check-request/${animal._id}`, {
+        headers
+      });
+      setAlreadyRequested(res.data.alreadyRequested);
+    } catch (err) {
+      console.error('Error checking request existence:', err);
+    }
+  
     await fetchComments(animal._id);
   };
 
@@ -185,12 +200,20 @@ const AvailableAnimals = () => {
               <button onClick={handleAddComment}>Comment</button>
             </div>  
 
-            <textarea
-              placeholder="Message to owner (optional)"
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-            />
-            <button onClick={handleAdopt} className="submit-button">Send Adoption Request</button>
+            {alreadyRequested ? (
+              <p style={{ color: '#999', marginTop: '12px' }}>
+                You’ve already sent an adoption request for this animal.
+              </p>
+            ) : (
+              <>
+                <textarea
+                  placeholder="Message to owner (optional)"
+                  value={message}
+                  onChange={e => setMessage(e.target.value)}
+                />
+                <button onClick={handleAdopt} className="submit-button">Send Adoption Request</button>
+              </>
+            )}
 
             {feedback && <p className="feedback">{feedback}</p>}
 

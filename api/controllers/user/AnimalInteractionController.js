@@ -81,7 +81,7 @@ export const getComments = async (req, res) => {
 
   const comments = await Comment.find({ animal: animalId })
     .populate('user', 'username')
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: 1 });
 
   res.json(comments);
 };

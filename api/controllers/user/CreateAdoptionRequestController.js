@@ -4,7 +4,7 @@ import Animal from '../../models/Animal.js';
 
 export const createAdoptionRequest = async (req, res) => {
   try {
-    const animal = await Animal.findById(req.params.animalId);
+    const animal = await Animal.findById(req.body.animalId);
     if (!animal || animal.status !== 'available') {
       return res.status(404).json({ message: 'Animal not available for adoption' });
     }
@@ -65,4 +65,23 @@ export const getAvailableAnimals = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+export const checkIfRequestExists = async (req, res) => {
+  try {
+    const { animalId } = req.params;
+    const userId = req.user._id;
+
+    const existing = await AdoptionRequest.findOne({
+      animal: animalId,
+      requester: userId,
+      status: { $in: ['pending', 'approved'] },
+    });
+
+    res.json({ alreadyRequested: !!existing });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
