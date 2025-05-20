@@ -8,6 +8,7 @@ import Profile from './pages/profile/Profile.js';
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
 import AvailableAnimals from './pages/user/availableAnimals/AvailableAnimals.js';
 import WishlistAnimals from './pages/user/wishlistAnimals/WishlistAnimals.js';
+import AdoptionRequestsUser from './pages/user/adoptionRequests/AdoptionRequestsUser.js';
 
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
@@ -80,6 +81,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/adoption-requests"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <AdoptionRequestsUser />
+              </ProtectedRoute>
+            }
+          />  
 
 
         <Route

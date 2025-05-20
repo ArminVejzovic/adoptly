@@ -1,0 +1,52 @@
+.adoption-requests-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #f9f9f9;
+  }
+  
+  .adoption-requests-container h2 {
+    text-align: center;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+  }
+  
+  .adoption-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .adoption-request-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .adoption-request-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .adoption-request-card h3 {
+    margin-top: 0;
+    color: #2f7168;
+  }
+  
+  .adoption-request-card p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  @media (max-width: 600px) {
+    .adoption-request-card {
+      padding: 12px;
+    }
+  
+    .adoption-request-card p {
+      font-size: 13px;
+    }
+  }
+  
