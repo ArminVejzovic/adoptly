@@ -13,6 +13,7 @@ import createAdoptionRequestRoute from './routes/user/createAdoptionRequestsRout
 import animalInteractionRoute from './routes/user/animalInteractionRoute.js'
 import animalWishlistRoute from './routes/user/animalWishlistRoute.js'
 import showAdoptionRequestRoute from './routes/user/adoptionRequestsRoute.js'
+import aiRecommenderRoute from './routes/user/aiRecommenderRoute.js'
 
 
 
@@ -36,6 +37,7 @@ app.use('/api/adoption', createAdoptionRequestRoute);
 app.use('/api/interact', animalInteractionRoute);
 app.use('/api/wishlist', animalWishlistRoute);
 app.use('/api/show-adoption-requests', showAdoptionRequestRoute);
+app.use('/api/ai', aiRecommenderRoute);
 
 
 const PORT = process.env.PORT || 3000;

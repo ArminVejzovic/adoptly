@@ -25,6 +25,11 @@ const UserDashboard = () => {
       title: 'Adoption Requests',
       icon: <FaPaw size={40} />,
       link: '/adoption-requests'
+    },
+    {
+      title: 'AI Animal Recommender ',
+      icon: <FaPaw size={40} />,
+      link: '/ai-recommender'
     }
   ];
 

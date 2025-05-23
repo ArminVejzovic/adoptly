@@ -9,6 +9,7 @@ import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
 import AvailableAnimals from './pages/user/availableAnimals/AvailableAnimals.js';
 import WishlistAnimals from './pages/user/wishlistAnimals/WishlistAnimals.js';
 import AdoptionRequestsUser from './pages/user/adoptionRequests/AdoptionRequestsUser.js';
+import AiRecommender from './pages/user/aiRecommender/AiRecommender.js';
 
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
@@ -87,6 +88,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['user']}>
                 <AdoptionRequestsUser />
+              </ProtectedRoute>
+            }
+          />  
+
+          <Route
+            path="/ai-recommender"
+            element={
+              <ProtectedRoute allowedRoles={['user']}>
+                <AiRecommender />
               </ProtectedRoute>
             }
           />  

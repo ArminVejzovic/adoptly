@@ -1,5 +1,5 @@
 import express from 'express';
-import { protect } from '../../middleware/authMiddleware.js';
+import { protect, authorizeRoles } from '../../middleware/authMiddleware.js';
 import {
   toggleLike,
   addComment,
@@ -11,11 +11,11 @@ import {
 
 const router = express.Router();
 
-router.post('/like/:animalId', protect, toggleLike);
-router.post('/wishlist/:animalId', protect, toggleWishlist);
-router.post('/comment/:animalId', protect, addComment);
-router.delete('/comment/:commentId', protect, deleteComment);
-router.get('/stats/:animalId', getAnimalStats);
-router.get('/comments/:animalId', getComments);
+router.post('/like/:animalId', protect, authorizeRoles('user'), toggleLike);
+router.post('/wishlist/:animalId', protect, authorizeRoles('user'), toggleWishlist);
+router.post('/comment/:animalId', protect, authorizeRoles('user'), addComment);
+router.delete('/comment/:commentId', protect, authorizeRoles('user'), deleteComment);
+router.get('/stats/:animalId', authorizeRoles('user'), getAnimalStats);
+router.get('/comments/:animalId', authorizeRoles('user'), getComments);
 
 export default router;

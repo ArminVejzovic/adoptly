@@ -1,0 +1,116 @@
+.pet-recommendation-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .pet-recommendation-form h2 {
+    text-align: center;
+    color: #2f7168;
+    margin-bottom: 24px;
+  }
+  
+  .pet-recommendation-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .pet-recommendation-form label {
+    font-weight: 500;
+    color: #444;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+  }
+  
+  .pet-recommendation-form input,
+  .pet-recommendation-form select {
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .pet-recommendation-form input:focus,
+  .pet-recommendation-form select:focus {
+    border-color: #2f7168;
+    outline: none;
+  }
+  
+  .pet-recommendation-form button {
+    padding: 12px;
+    background-color: #2f7168;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .pet-recommendation-form button:hover {
+    background-color: #256158;
+  }
+  
+  .recommendation-result {
+    margin-top: 24px;
+    background-color: #eef5f3;
+    padding: 20px;
+    border-left: 4px solid #2f7168;
+    border-radius: 8px;
+    animation: fadeIn 0.4s ease-in-out;
+  }
+  
+  .recommendation-result h3 {
+    margin-top: 0;
+    color: #2f7168;
+  }
+  
+  .recommendation-result p {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .pet-recommendation-form textarea {
+    padding: 10px 12px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    resize: vertical;
+  }
+  
+  
+  @media (max-width: 600px) {
+    .pet-recommendation-form {
+      margin: 20px;
+      padding: 16px;
+    }
+  }
+  
