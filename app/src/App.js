@@ -4,6 +4,7 @@ import LoginPage from './pages/authPages/LoginPage.js';
 import RegisterPage from './pages/authPages/RegisterPage.js';
 
 import Profile from './pages/profile/Profile.js';
+import PublicProfile from './pages/publicProfile/PublicProfile.js';
 
 import UserDashboard from './pages/user/userDashboard/UserDashboard.js';
 import AvailableAnimals from './pages/user/availableAnimals/AvailableAnimals.js';
@@ -135,6 +136,14 @@ function App() {
               </ProtectedRoute>
             } />
 
+          <Route
+            path="/profile/:username"
+            element={
+              <ProtectedRoute allowedRoles={['user', 'owner', 'admin']}>
+                <PublicProfile />
+              </ProtectedRoute>
+            }
+          />
 
 
         <Route
