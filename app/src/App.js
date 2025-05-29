@@ -14,7 +14,7 @@ import AiRecommender from './pages/user/aiRecommender/AiRecommender.js';
 import OwnerDashboard from './pages/owner/ownerDashboard/OwnerDashboard.js';
 import AddAnimal from './pages/owner/addAnimal/AddAnimal.js';
 import MyAnimals from './pages/owner/myAnimals/MyAnimals.js';
-import AdoptionRequests from './pages/owner/adoptionRequests/AdoptionRequests.js';
+import AdoptionRequestsOwner from './pages/owner/adoptionRequests/AdoptionRequestsOwner.js';
 
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
 
@@ -128,12 +128,14 @@ function App() {
             } />
 
           <Route
-            path="/adoption-requests"
+            path="/adoption-requests-owner"
             element={
               <ProtectedRoute allowedRoles={['owner']}>
-                <AdoptionRequests />
+                <AdoptionRequestsOwner />
               </ProtectedRoute>
             } />
+
+
 
         <Route
           path="/admin-dashboard"

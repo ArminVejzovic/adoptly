@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './AdoptionRequests.css';
+import './AdoptionRequestsOwner.css';
 
 const AdoptionRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -9,7 +9,7 @@ const AdoptionRequests = () => {
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3000/api/adoption-requests/my-requests', {
+        const response = await axios.get('http://localhost:3000/api/control-adoption/my-requests', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRequests(response.data);
@@ -23,7 +23,7 @@ const AdoptionRequests = () => {
   const handleApprove = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3000/api/adoption-requests/${id}/approve`, {}, {
+      await axios.put(`http://localhost:3000/api/control-adoption/${id}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRequests(prev => prev.map(r => r._id === id ? { ...r, status: 'approved' } : r));
@@ -35,7 +35,7 @@ const AdoptionRequests = () => {
   const handleReject = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3000/api/adoption-requests/${id}/reject`, {}, {
+      await axios.put(`http://localhost:3000/api/control-adoption/${id}/reject`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRequests(prev => prev.map(r => r._id === id ? { ...r, status: 'rejected' } : r));

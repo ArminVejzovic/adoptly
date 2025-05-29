@@ -24,7 +24,7 @@ const OwnerDashboard = () => {
     {
       title: 'Adoption Requests',
       icon: <FaPaw size={40} />,
-      link: '/adoption-requests'
+      link: '/adoption-requests-owner'
     }
   ];
 
