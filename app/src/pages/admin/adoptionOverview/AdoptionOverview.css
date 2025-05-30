@@ -1,0 +1,78 @@
+.overview-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #f1faee;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .overview-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1d3557;
+  }
+  
+  /* Desktop prikaz (tabela) */
+  @media (min-width: 768px) {
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    .overview-table th,
+    .overview-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+  
+    .overview-table th {
+      background-color: #a8dadc;
+      color: #1d3557;
+    }
+  
+    .overview-table tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+  
+    .overview-cards {
+      display: none;
+    }
+  }
+  
+  /* Mobilni prikaz (cards) */
+  @media (max-width: 767px) {
+    .overview-table {
+      display: none;
+    }
+  
+    .overview-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  
+    .overview-card {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-left: 4px solid #2a9d8f;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+  
+    .overview-card p {
+      margin: 8px 0;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+  
+    .overview-card span.label {
+      font-weight: bold;
+      color: #1d3557;
+    }
+  }
+  
