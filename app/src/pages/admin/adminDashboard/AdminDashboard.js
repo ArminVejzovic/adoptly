@@ -7,6 +7,11 @@ import './AdminDashboard.css';
 const AdminDashboard = () => {
   const dashboardItems = [
     {
+      title: 'Create Admin',
+      icon: <FaUsers size={40} />,
+      link: '/create-admin'
+    },
+    {
       title: 'User Management',
       icon: <FaUsers size={40} />,
       link: '/admin/users'
