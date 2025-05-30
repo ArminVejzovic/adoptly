@@ -19,6 +19,7 @@ import AdoptionRequestsOwner from './pages/owner/adoptionRequests/AdoptionReques
 
 import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
 import CreateAdmin from './pages/admin/createAdmin/CreateAdmin.js'
+import UserListAdmin from './pages/admin/userListAdmin/UserListAdmin.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
@@ -161,6 +162,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <CreateAdmin />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <UserListAdmin />
               </ProtectedRoute>
             }
           />
