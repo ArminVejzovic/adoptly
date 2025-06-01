@@ -36,6 +36,11 @@ const AdminDashboard = () => {
       icon: <FaBlog size={40} />,
       link: '/admin/stats'
     },
+    {
+      title: 'App Species',
+      icon: <FaBlog size={40} />,
+      link: '/add-species'
+    },
     
     {
       title: 'Profile',

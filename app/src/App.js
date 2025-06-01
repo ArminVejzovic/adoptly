@@ -24,6 +24,7 @@ import AdoptionOverview from './pages/admin/adoptionOverview/AdoptionOverview.js
 import CreateBlog from './pages/admin/createBlog/CreateBlog.js';
 import BlogManager from './pages/admin/blogManager/BlogManager.js';
 import StatsAdmin from './pages/admin/statsAdmin/StatsAdmin.js';
+import SpeciesManager from './pages/admin/speciesManager/SpeciesManager.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
@@ -211,6 +212,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <StatsAdmin />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/add-species"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <SpeciesManager />
               </ProtectedRoute>
             }
           />
