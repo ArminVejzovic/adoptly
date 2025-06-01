@@ -18,6 +18,7 @@ import createAdmin from './routes/admin/createAdminRoute.js'
 import userManagementRoute from './routes/admin/userManagementRoute.js'
 import adoptionOverviewRoute from './routes/admin/adoptrionOverviewRoute.js'
 import blogRoute from './routes/admin/blogRoute.js'
+import statsRoute from './routes/admin/statsRoute.js'
 
 
 
@@ -46,6 +47,7 @@ app.use('/api/create-admin', createAdmin);
 app.use('/api/users-management', userManagementRoute);
 app.use('/api/adoption-overview', adoptionOverviewRoute);
 app.use('/api/blog', blogRoute);
+app.use('/api/admin-stats', statsRoute);
 
 
 const PORT = process.env.PORT || 3000;
