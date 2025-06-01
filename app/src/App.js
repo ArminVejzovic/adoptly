@@ -21,6 +21,7 @@ import AdminDashboard from './pages/admin/adminDashboard/AdminDashboard.js';
 import CreateAdmin from './pages/admin/createAdmin/CreateAdmin.js'
 import UserListAdmin from './pages/admin/userListAdmin/UserListAdmin.js';
 import AdoptionOverview from './pages/admin/adoptionOverview/AdoptionOverview.js';
+import CreateBlog from './pages/admin/createBlog/CreateBlog.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
@@ -181,6 +182,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin']}>
                 <AdoptionOverview />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/create-blog"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <CreateBlog />
               </ProtectedRoute>
             }
           />

@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     {
       title: 'Blog CMS',
       icon: <FaBlog size={40} />,
-      link: '/admin/blog'
+      link: '/admin/create-blog'
     },
     {
       title: 'Profile',

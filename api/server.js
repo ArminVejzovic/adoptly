@@ -17,6 +17,7 @@ import aiRecommenderRoute from './routes/user/aiRecommenderRoute.js'
 import createAdmin from './routes/admin/createAdminRoute.js'
 import userManagementRoute from './routes/admin/userManagementRoute.js'
 import adoptionOverviewRoute from './routes/admin/adoptrionOverviewRoute.js'
+import adminBlogRoute from './routes/admin/createBlogRoute.js'
 
 
 
@@ -44,6 +45,7 @@ app.use('/api/ai', aiRecommenderRoute);
 app.use('/api/create-admin', createAdmin);
 app.use('/api/users-management', userManagementRoute);
 app.use('/api/adoption-overview', adoptionOverviewRoute);
+app.use('/api/admin-blog', adminBlogRoute);
 
 
 const PORT = process.env.PORT || 3000;
