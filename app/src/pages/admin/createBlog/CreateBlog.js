@@ -42,7 +42,7 @@ const CreateBlog = () => {
       data.append('tags', form.tags);
       if (form.image) data.append('image', form.image);
 
-      await axios.post('http://localhost:3000/api/admin-blog/create-blog', data, {
+      await axios.post('http://localhost:3000/api/blog/create-blog', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
