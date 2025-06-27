@@ -16,11 +16,21 @@ const WishlistAnimals = () => {
 
     const fetchAnimals = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/wishlist/get-wishlist', { headers });
-        const animalsWithStats = await Promise.all(res.data.map(async animal => {
-          const statRes = await axios.get(`http://localhost:3000/api/interact/stats/${animal._id}`);
-          return { ...animal, stats: statRes.data };
-        }));
+        const res = await axios.get(
+          'http://localhost:3000/api/wishlist/get-wishlist',
+          { headers }
+        );
+
+        const animalsWithStats = await Promise.all(
+          res.data.map(async (animal) => {
+            const statRes = await axios.get(
+              `http://localhost:3000/api/interact/stats/${animal._id}`,
+              { headers }
+            );
+            return { ...animal, stats: statRes.data };
+          })
+        );
+
         setAnimals(animalsWithStats);
       } catch (err) {
         console.error('Error fetching wishlist animals:', err);
@@ -38,26 +48,50 @@ const WishlistAnimals = () => {
   const handleToggleLike = async () => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
-    await axios.post(`http://localhost:3000/api/interact/like/${selectedAnimal._id}`, {}, { headers });
+
+    await axios.post(
+      `http://localhost:3000/api/interact/like/${selectedAnimal._id}`,
+      {},
+      { headers }
+    );
+
     updateStats(selectedAnimal._id);
   };
 
   const handleToggleWishlist = async () => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
-    await axios.post(`http://localhost:3000/api/interact/wishlist/${selectedAnimal._id}`, {}, { headers });
+
+    await axios.post(
+      `http://localhost:3000/api/interact/wishlist/${selectedAnimal._id}`,
+      {},
+      { headers }
+    );
+
     updateStats(selectedAnimal._id);
   };
 
   const fetchComments = async (animalId) => {
-    const res = await axios.get(`http://localhost:3000/api/interact/comments/${animalId}`);
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const res = await axios.get(
+      `http://localhost:3000/api/interact/comments/${animalId}`,
+      { headers }
+    );
     setComments(res.data);
   };
 
   const handleAddComment = async () => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
-    await axios.post(`http://localhost:3000/api/interact/comment/${selectedAnimal._id}`, { text: commentText }, { headers });
+
+    await axios.post(
+      `http://localhost:3000/api/interact/comment/${selectedAnimal._id}`,
+      { text: commentText },
+      { headers }
+    );
+
     setCommentText('');
     fetchComments(selectedAnimal._id);
     updateStats(selectedAnimal._id);
@@ -66,14 +100,30 @@ const WishlistAnimals = () => {
   const handleDeleteComment = async (commentId) => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
-    await axios.delete(`http://localhost:3000/api/interact/comment/${commentId}`, { headers });
+
+    await axios.delete(
+      `http://localhost:3000/api/interact/comment/${commentId}`,
+      { headers }
+    );
+
     fetchComments(selectedAnimal._id);
     updateStats(selectedAnimal._id);
   };
 
   const updateStats = async (animalId) => {
-    const res = await axios.get(`http://localhost:3000/api/interact/stats/${animalId}`);
-    setAnimals(prev => prev.map(a => (a._id === animalId ? { ...a, stats: res.data } : a)));
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+
+    const res = await axios.get(
+      `http://localhost:3000/api/interact/stats/${animalId}`,
+      { headers }
+    );
+
+    setAnimals((prev) =>
+      prev.map((a) =>
+        a._id === animalId ? { ...a, stats: res.data } : a
+      )
+    );
   };
 
   const openAnimal = async (animal) => {
@@ -82,6 +132,7 @@ const WishlistAnimals = () => {
     setFeedback(null);
     setCommentText('');
     setComments([]);
+
     await fetchComments(animal._id);
   };
 
@@ -94,15 +145,24 @@ const WishlistAnimals = () => {
         <p>You have no saved animals in your wishlist.</p>
       ) : (
         <div className="animal-grid">
-          {animals.map(animal => (
-            <div key={animal._id} className="animal-card" onClick={() => openAnimal(animal)}>
+          {animals.map((animal) => (
+            <div
+              key={animal._id}
+              className="animal-card"
+              onClick={() => openAnimal(animal)}
+            >
               {animal.profileImage?.base64 ? (
-                <img src={bufferToBase64(animal.profileImage)} alt={animal.name} />
+                <img
+                  src={bufferToBase64(animal.profileImage)}
+                  alt={animal.name}
+                />
               ) : (
                 <div className="no-image">No Image</div>
               )}
               <h3>{animal.name}</h3>
-              <p>{animal.breed} • {animal.age} years</p>
+              <p>
+                {animal.breed} • {animal.age} years
+              </p>
               <div className="animal-meta">
                 <span>👍 {animal.stats?.likes || 0}</span>
                 <span>💬 {animal.stats?.comments || 0}</span>
@@ -114,33 +174,66 @@ const WishlistAnimals = () => {
       )}
 
       {selectedAnimal && (
-        <div className="modal-overlay" onClick={() => setSelectedAnimal(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="close-button" onClick={() => setSelectedAnimal(null)}>×</button>
+        <div
+          className="modal-overlay"
+          onClick={() => setSelectedAnimal(null)}
+        >
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="close-button"
+              onClick={() => setSelectedAnimal(null)}
+            >
+              ×
+            </button>
             <h2>{selectedAnimal.name}</h2>
             {selectedAnimal.profileImage?.base64 && (
-              <img src={bufferToBase64(selectedAnimal.profileImage)} alt={selectedAnimal.name} />
+              <img
+                src={bufferToBase64(selectedAnimal.profileImage)}
+                alt={selectedAnimal.name}
+              />
             )}
-            <p><strong>Breed:</strong> {selectedAnimal.breed}</p>
-            <p><strong>Age:</strong> {selectedAnimal.age}</p>
-            <p><strong>Description:</strong> {selectedAnimal.description}</p>
+            <p>
+              <strong>Breed:</strong> {selectedAnimal.breed}
+            </p>
+            <p>
+              <strong>Age:</strong> {selectedAnimal.age}
+            </p>
+            <p>
+              <strong>Description:</strong>{' '}
+              {selectedAnimal.description}
+            </p>
 
             <div className="actions-row">
               <button onClick={handleToggleLike}>👍 Like</button>
-              <button onClick={handleToggleWishlist}>💾 Save</button>
+              <button onClick={handleToggleWishlist}>
+                💾 Save
+              </button>
             </div>
 
             <div className="comments-list">
-              {comments.map(comment => (
+              {comments.map((comment) => (
                 <div key={comment._id} className="comment-item">
                   <p>
                     <strong>
-                      {comment.user?.username === localStorage.getItem('username') ? 'Me:' : comment.user?.username || 'User'}
+                      {comment.user?.username ===
+                      localStorage.getItem('username')
+                        ? 'Me:'
+                        : comment.user?.username || 'User'}
                     </strong>{' '}
                     {comment.text}
                   </p>
                   {comment.user?._id === user?._id && (
-                    <button className="delete-comment" onClick={() => handleDeleteComment(comment._id)}>🗑️</button>
+                    <button
+                      className="delete-comment"
+                      onClick={() =>
+                        handleDeleteComment(comment._id)
+                      }
+                    >
+                      🗑️
+                    </button>
                   )}
                 </div>
               ))}
@@ -151,18 +244,27 @@ const WishlistAnimals = () => {
                 type="text"
                 placeholder="Add a comment..."
                 value={commentText}
-                onChange={e => setCommentText(e.target.value)}
+                onChange={(e) =>
+                  setCommentText(e.target.value)
+                }
               />
-              <button onClick={handleAddComment}>Comment</button>
+              <button onClick={handleAddComment}>
+                Comment
+              </button>
             </div>
 
             <textarea
               placeholder="Message to owner (optional)"
               value={message}
-              onChange={e => setMessage(e.target.value)}
+              onChange={(e) => setMessage(e.target.value)}
             />
-            <button className="submit-button">Send Adoption Request</button>
-            {feedback && <p className="feedback">{feedback}</p>}
+            <button className="submit-button">
+              Send Adoption Request
+            </button>
+
+            {feedback && (
+              <p className="feedback">{feedback}</p>
+            )}
           </div>
         </div>
       )}

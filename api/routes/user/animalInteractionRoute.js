@@ -15,7 +15,7 @@ router.post('/like/:animalId', protect, authorizeRoles('user'), toggleLike);
 router.post('/wishlist/:animalId', protect, authorizeRoles('user'), toggleWishlist);
 router.post('/comment/:animalId', protect, authorizeRoles('user'), addComment);
 router.delete('/comment/:commentId', protect, authorizeRoles('user'), deleteComment);
-router.get('/stats/:animalId', authorizeRoles('user'), getAnimalStats);
-router.get('/comments/:animalId', authorizeRoles('user'), getComments);
+router.get('/stats/:animalId', protect, authorizeRoles('user'), getAnimalStats);
+router.get('/comments/:animalId', protect, authorizeRoles('user'), getComments);
 
 export default router;

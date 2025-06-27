@@ -100,7 +100,6 @@ const AddAnimal = () => {
           data.append('longitude', value[0]);
           data.append('latitude', value[1]);
         } else if (key === 'profileImagePreview' || key === 'imagePreviews') {
-          // Skip previews
         } else {
           data.append(key, value);
         }
@@ -114,7 +113,7 @@ const AddAnimal = () => {
           }
       });
 
-      navigate('/owner-profile');
+      navigate('/owner-dashboard');
     } catch (error) {
       console.error('Error while adding animal:', error);
     }
