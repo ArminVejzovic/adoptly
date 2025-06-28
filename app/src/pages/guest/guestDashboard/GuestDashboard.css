@@ -1,0 +1,73 @@
+@import url('../../owner/myAnimals/MyAnimals.css');
+@import url('../../admin/statsAdmin/StatsAdmin.css');
+@import url('../../admin/blogManager/BlogManager.css');
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filters select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.tab-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.tab-buttons button {
+  background-color: #eee;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab-buttons button:hover {
+  background-color: #ccc;
+}
+
+.tab-buttons button.active {
+  background-color: #2a9d8f;
+  color: white;
+}
+
+.stats-overview {
+  text-align: center;
+}
+
+.stats-overview ul {
+  list-style: none;
+  padding: 0;
+}
+
+.stats-overview li {
+  margin: 10px 0;
+  font-size: 1.2rem;
+}
+
+.guest-banner {
+  background-color: #ffe9b3;
+  padding: 15px 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #664d03;
+  font-weight: 500;
+  border: 1px solid #ffd474;
+}
+
+.guest-banner a {
+  color: #c24e00;
+  text-decoration: underline;
+  font-weight: bold;
+}
