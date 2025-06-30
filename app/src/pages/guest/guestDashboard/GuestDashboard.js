@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './GuestDashboard.css';
 
 const GuestDashboard = () => {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState('animals');
 
   const [animals, setAnimals] = useState([]);
@@ -21,6 +24,10 @@ const GuestDashboard = () => {
 
   const [stats, setStats] = useState(null);
 
+  const [wishlist, setWishlist] = useState(
+    JSON.parse(localStorage.getItem('guestWishlist')) || []
+  );
+
   useEffect(() => {
     if (activeTab === 'animals') {
       fetchSpecies();
@@ -37,6 +44,12 @@ const GuestDashboard = () => {
       fetchAnimals();
     }
   }, [filters]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('guestWishlist');
+    };
+  }, []);
 
   const fetchSpecies = async () => {
     try {
@@ -92,16 +105,57 @@ const GuestDashboard = () => {
     return `data:${profileImage.contentType};base64,${profileImage.base64}`;
   };
 
+  const addToWishlist = (animal) => {
+    if (!wishlist.find((item) => item._id === animal._id)) {
+      const newWishlist = [...wishlist, animal];
+      setWishlist(newWishlist);
+      localStorage.setItem('guestWishlist', JSON.stringify(newWishlist));
+    }
+  };
+
+  const removeFromWishlist = (id) => {
+    const newWishlist = wishlist.filter(item => item._id !== id);
+    setWishlist(newWishlist);
+    localStorage.setItem('guestWishlist', JSON.stringify(newWishlist));
+  };
+
+  const clearWishlistAndNavigate = (path) => {
+    localStorage.removeItem('guestWishlist');
+    setWishlist([]);
+    navigate(path);
+  };
+
   return (
     <div className="guest-dashboard">
       <h2>Guest Dashboard</h2>
 
+      <div className="guest-header-actions">
+        <button
+          className="back-btn"
+          onClick={() => clearWishlistAndNavigate('/')}
+        >
+          ⬅ Back to Landing Page
+        </button>
+      </div>
+
       <div className="guest-banner">
-          <p>
-              ⚠️ You are browsing as a guest. Please{" "}
-              <a href="/register">register</a> or{" "}
-              <a href="/login">login</a> to unlock features like Chat, Notifications, Favorites, and Adoption Requests.
-          </p>
+        <p>
+          ⚠️ You are browsing as a guest. Please{" "}
+          <a href="/register" onClick={(e) => {
+            e.preventDefault();
+            clearWishlistAndNavigate('/register');
+          }}>
+            register
+          </a>{" "}
+          or{" "}
+          <a href="/login" onClick={(e) => {
+            e.preventDefault();
+            clearWishlistAndNavigate('/login');
+          }}>
+            login
+          </a>{" "}
+          to unlock features like Chat, Notifications, Favorites, and Adoption Requests.
+        </p>
       </div>
 
       <div className="tab-buttons">
@@ -122,6 +176,12 @@ const GuestDashboard = () => {
           onClick={() => setActiveTab('stats')}
         >
           Statistics
+        </button>
+        <button
+          className={activeTab === 'wishlist' ? 'active' : ''}
+          onClick={() => setActiveTab('wishlist')}
+        >
+          Wishlist
         </button>
       </div>
 
@@ -188,6 +248,14 @@ const GuestDashboard = () => {
                 <p><strong>Age:</strong> {animal.age}</p>
                 <p><strong>Species:</strong> {animal.species?.name}</p>
                 <p><strong>Likes:</strong> {animal.likes || 0}</p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToWishlist(animal);
+                  }}
+                >
+                  Add to Wishlist
+                </button>
               </div>
             ))}
           </div>
@@ -248,6 +316,27 @@ const GuestDashboard = () => {
             <li><strong>Adoption requests:</strong> {stats.adoptionRequests}</li>
             <li><strong>Blog posts:</strong> {stats.blogPosts}</li>
           </ul>
+        </div>
+      )}
+
+      {activeTab === 'wishlist' && (
+        <div className="wishlist-grid">
+          <h3>Your Wishlist (Guest - Local Only)</h3>
+          {wishlist.length === 0 && <p>Your wishlist is empty.</p>}
+          {wishlist.map(item => (
+            <div key={item._id} className="gallery-card">
+              <h3>{item.name}</h3>
+              {item.profileImage?.base64 && (
+                <img
+                  src={bufferToBase64(item.profileImage)}
+                  alt={item.name}
+                />
+              )}
+              <p><strong>Age:</strong> {item.age}</p>
+              <p><strong>Species:</strong> {item.species?.name}</p>
+              <button onClick={() => removeFromWishlist(item._id)}>Remove</button>
+            </div>
+          ))}
         </div>
       )}
     </div>
