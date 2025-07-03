@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import ReportButton from '../../components/reportButton/ReportButton.js';
 import './PublicProfile.css';
 
 const PublicProfile = () => {
@@ -11,9 +12,12 @@ const PublicProfile = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:3000/api/profile/${username}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        const response = await axios.get(
+          `http://localhost:3000/api/profile/${username}`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
         setUser(response.data);
       } catch (error) {
         console.error('Error fetching public profile:', error);
@@ -54,6 +58,10 @@ const PublicProfile = () => {
       <div className="profile-timestamps">
         <p>Created: {new Date(user.createdAt).toLocaleDateString()}</p>
         <p>Last Update: {new Date(user.updatedAt).toLocaleDateString()}</p>
+      </div>
+
+      <div className="profile-actions">
+        <ReportButton reportedType="user" reportedId={user._id} />
       </div>
     </div>
   );

@@ -33,7 +33,17 @@ const AdoptionRequestUser = () => {
               <h3>{req.animal?.name || 'Nepoznata životinja'}</h3>
               <p><strong>Status:</strong> {req.status}</p>
               <p><strong>Poruka:</strong> {req.message}</p>
-              <p><strong>Vlasnik:</strong> {req.owner?.username || 'Nepoznat'}</p>
+              <p>
+                <strong>Vlasnik:</strong>{' '}
+                {req.owner?.username ? (
+                  <a href={`/profile/${req.owner.username}`}>
+                    {req.owner.username}
+                  </a>
+                ) : (
+                  'Nepoznat'
+                )}
+              </p>
+
               <p><strong>Datum:</strong> {new Date(req.createdAt).toLocaleDateString()}</p>
             </div>
           ))
