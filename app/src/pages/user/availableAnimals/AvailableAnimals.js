@@ -356,7 +356,6 @@ const AvailableAnimals = () => {
         </div>
       )}
 
-      {/* REPORT MODAL */}
       {showReportModal && (
         <div className="modal-overlay" onClick={() => setShowReportModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

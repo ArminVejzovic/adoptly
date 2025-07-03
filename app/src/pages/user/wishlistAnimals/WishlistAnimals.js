@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReportButton from '../../../components/reportButton/ReportButton.js'; 
 import './WishlistAnimals.css';
 
 const WishlistAnimals = () => {
@@ -211,6 +212,10 @@ const WishlistAnimals = () => {
               <button onClick={handleToggleWishlist}>
                 💾 Save
               </button>
+              <ReportButton
+                reportedType="animal"
+                reportedId={selectedAnimal._id}
+              />
             </div>
 
             <div className="comments-list">

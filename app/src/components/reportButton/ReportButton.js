@@ -13,11 +13,15 @@ const ReportButton = ({ reportedType, reportedId }) => {
   const handleSubmit = async () => {
     try {
       await axios.post(
-        'http://localhost:3000/api/reports',
+        'http://localhost:3000/api/admin/reports',
         {
+          targetModel: reportedType === 'animal' ? 'Animal'
+                       : reportedType === 'user' ? 'User'
+                       : reportedType === 'blog' ? 'BlogPost'
+                       : reportedType === 'comment' ? 'Comment'
+                       : '',
+          targetId: reportedId,
           description,
-          reportedUser: reportedType === 'user' ? reportedId : null,
-          reportedAnimal: reportedType === 'animal' ? reportedId : null,
         },
         {
           headers: {
@@ -26,9 +30,14 @@ const ReportButton = ({ reportedType, reportedId }) => {
         }
       );
       setSuccess('Report submitted successfully.');
+      setError(null);
       setDescription('');
-      setTimeout(() => setOpen(false), 1500);
+      setTimeout(() => {
+        setOpen(false);
+        setSuccess(null);
+      }, 1500);
     } catch (err) {
+      setSuccess(null);
       setError(err.response?.data?.message || 'Error submitting report.');
     }
   };
