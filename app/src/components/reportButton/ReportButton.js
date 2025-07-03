@@ -17,7 +17,6 @@ const ReportButton = ({ reportedType, reportedId }) => {
         {
           targetModel: reportedType === 'animal' ? 'Animal'
                        : reportedType === 'user' ? 'User'
-                       : reportedType === 'blog' ? 'BlogPost'
                        : reportedType === 'comment' ? 'Comment'
                        : '',
           targetId: reportedId,

@@ -3,13 +3,25 @@ import AbuseReport from '../../models/AbuseReport.js';
 
 export const createAbuseReport = async (req, res) => {
   try {
-    const { targetModel, targetId, description } = req.body;
+    const {
+      targetModel,
+      targetId,
+      description,
+      authorModel,
+      authorId,
+      contextModel,
+      contextId,
+    } = req.body;
 
     const report = await AbuseReport.create({
       reporter: req.user.id,
       targetModel,
       targetId,
       description,
+      authorModel,
+      authorId,
+      contextModel,
+      contextId,
     });
 
     res.status(201).json(report);
@@ -20,6 +32,7 @@ export const createAbuseReport = async (req, res) => {
     });
   }
 };
+
 
 export const getAllAbuseReports = async (req, res) => {
   try {
@@ -34,17 +47,36 @@ export const getAllAbuseReports = async (req, res) => {
 
     for (const report of reports) {
       if (report.targetModel === 'Animal') {
-        const animal = await mongoose.model('Animal').findById(report.targetId).select('name').lean();
+        const animal = await mongoose.model('Animal')
+          .findById(report.targetId)
+          .populate('owner', 'username email')
+          .select('name owner')
+          .lean();
+
         report.targetDisplay = animal ? animal.name : '(deleted)';
-      } else if (report.targetModel === 'BlogPost') {
-        const blog = await mongoose.model('BlogPost').findById(report.targetId).select('title').lean();
-        report.targetDisplay = blog ? blog.title : '(deleted)';
+        report.animalOwner = animal?.owner
+          ? `${animal.owner.username} (${animal.owner.email})`
+          : null;
       } else if (report.targetModel === 'User') {
         const user = await mongoose.model('User').findById(report.targetId).select('username email').lean();
         report.targetDisplay = user ? `${user.username} (${user.email})` : '(deleted)';
       } else if (report.targetModel === 'Comment') {
-        const comment = await mongoose.model('Comment').findById(report.targetId).select('text').lean();
-        report.targetDisplay = comment ? comment.text.slice(0, 50) : '(deleted)';
+        const comment = await mongoose.model('Comment').findById(report.targetId).select('text user').populate('user', 'username email').lean();
+        report.targetDisplay = comment ? comment.text?.slice(0, 50) : '(deleted)';
+
+        if (comment?.user) {
+          report.authorDisplay = `${comment.user.username} (${comment.user.email})`;
+        } else if (report.authorId) {
+          const user = await mongoose.model('User').findById(report.authorId).select('username email').lean();
+          report.authorDisplay = user ? `${user.username} (${user.email})` : '(deleted)';
+        } else {
+          report.authorDisplay = '(unknown)';
+        }
+
+        if (report.contextModel === 'Animal' && report.contextId) {
+          const animal = await mongoose.model('Animal').findById(report.contextId).select('name').lean();
+          report.contextDisplay = animal ? animal.name : '(deleted)';
+        }
       }
     }
 

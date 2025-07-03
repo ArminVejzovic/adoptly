@@ -77,20 +77,62 @@ const AbuseReportManager = () => {
                     <strong>Reporter:</strong>{' '}
                     {rep.reporter?.username} ({rep.reporter?.email})
                   </p>
+
                   <p>
                     <strong>Target Model:</strong> {rep.targetModel}
                   </p>
-                  <p>
-                    <strong>Target:</strong>{' '}
-                    {rep.targetDisplay || rep.targetId}
-                  </p>
+
+                  {rep.targetModel === 'Comment' ? (
+                    <p>
+                        <strong>Comment Message:</strong>{' '}
+                        {rep.targetDisplay || rep.targetId}
+                    </p>
+                    ) : rep.targetModel === 'Animal' ? (
+                    <>
+                        <p>
+                        <strong>Target:</strong>{' '}
+                        {rep.targetDisplay || rep.targetId}
+                        </p>
+                        {rep.animalOwner && (
+                        <p>
+                            <strong>Owner:</strong> {rep.animalOwner}
+                        </p>
+                        )}
+                    </>
+                    ) : (
+                    <p>
+                        <strong>Target:</strong>{' '}
+                        {rep.targetDisplay || rep.targetId}
+                    </p>
+                    )}
+
+
+                  {rep.targetModel === 'Comment' && (
+                    <>
+                      {rep.authorDisplay && (
+                        <p>
+                          <strong>Comment Author:</strong>{' '}
+                          {rep.authorDisplay}
+                        </p>
+                      )}
+                      {rep.contextDisplay && (
+                        <p>
+                          <strong>Context:</strong>{' '}
+                          {rep.contextModel} → {rep.contextDisplay}
+                        </p>
+                      )}
+                    </>
+                  )}
+
                   <p>
                     <strong>Description:</strong> {rep.description}
                   </p>
+
                   <p>
                     <strong>Date:</strong>{' '}
                     {new Date(rep.createdAt).toLocaleString()}
                   </p>
+
                   <div className="status-buttons">
                     {['open', 'resolved', 'rejected'].map((s) => (
                       <button
