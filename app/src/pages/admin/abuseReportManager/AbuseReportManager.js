@@ -81,7 +81,8 @@ const AbuseReportManager = () => {
                     <strong>Target Model:</strong> {rep.targetModel}
                   </p>
                   <p>
-                    <strong>Target ID:</strong> {rep.targetId}
+                    <strong>Target:</strong>{' '}
+                    {rep.targetDisplay || rep.targetId}
                   </p>
                   <p>
                     <strong>Description:</strong> {rep.description}

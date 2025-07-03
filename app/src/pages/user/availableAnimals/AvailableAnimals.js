@@ -11,6 +11,10 @@ const AvailableAnimals = () => {
   const [comments, setComments] = useState([]);
   const [alreadyRequested, setAlreadyRequested] = useState(false);
 
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportDescription, setReportDescription] = useState('');
+  const [reportFeedback, setReportFeedback] = useState(null);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
@@ -171,6 +175,40 @@ const AvailableAnimals = () => {
     await fetchComments(animal._id);
   };
 
+  const handleSubmitReport = async () => {
+    if (!reportDescription.trim()) {
+      setReportFeedback('Please enter a description.');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+
+      await axios.post(
+        'http://localhost:3000/api/admin/reports',
+        {
+          targetModel: 'Animal',
+          targetId: selectedAnimal._id,
+          description: reportDescription,
+        },
+        { headers }
+      );
+
+      setReportFeedback('Report submitted successfully!');
+      setReportDescription('');
+      setTimeout(() => {
+        setShowReportModal(false);
+        setReportFeedback(null);
+      }, 1500);
+    } catch (error) {
+      console.error(error);
+      setReportFeedback(
+        error.response?.data?.message || 'Failed to submit report.'
+      );
+    }
+  };
+
   const user = JSON.parse(localStorage.getItem('user'));
 
   return (
@@ -240,6 +278,12 @@ const AvailableAnimals = () => {
             <div className="actions-row">
               <button onClick={handleToggleLike}>👍 Like</button>
               <button onClick={handleToggleWishlist}>💾 Save</button>
+              <button
+                className="report-btn"
+                onClick={() => setShowReportModal(true)}
+              >
+                🚨 Report Animal
+              </button>
             </div>
 
             <div className="comments-list">
@@ -308,6 +352,28 @@ const AvailableAnimals = () => {
             {feedback && (
               <p className="feedback">{feedback}</p>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* REPORT MODAL */}
+      {showReportModal && (
+        <div className="modal-overlay" onClick={() => setShowReportModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="close-button"
+              onClick={() => setShowReportModal(false)}
+            >
+              ×
+            </button>
+            <h3>Report Animal</h3>
+            <textarea
+              placeholder="Describe the abuse or reason for reporting..."
+              value={reportDescription}
+              onChange={(e) => setReportDescription(e.target.value)}
+            />
+            <button onClick={handleSubmitReport}>Submit Report</button>
+            {reportFeedback && <p className="feedback">{reportFeedback}</p>}
           </div>
         </div>
       )}
