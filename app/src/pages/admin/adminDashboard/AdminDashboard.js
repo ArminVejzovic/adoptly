@@ -46,7 +46,16 @@ const AdminDashboard = () => {
       title: 'Profile',
       icon: <FaUserCog size={40} />,
       link: '/profile'
+    },
+
+    {
+      title: 'Reports',
+      icon: <FaUserCog size={40} />,
+      link: '/admin/reports'
     }
+
+
+    
   ];
 
   return (

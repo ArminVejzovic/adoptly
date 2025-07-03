@@ -1,0 +1,45 @@
+.abuse-report-manager {
+  max-width: 1000px;
+  margin: 2rem auto;
+  font-family: sans-serif;
+  padding: 1rem;
+}
+
+.section-header {
+  background: #eee;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}
+
+.report-list {
+  padding: 1rem;
+}
+
+.report-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.report-card p {
+  margin: 0.3rem 0;
+}
+
+.status-buttons button {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.status-buttons button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

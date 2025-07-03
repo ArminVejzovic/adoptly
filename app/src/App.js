@@ -25,6 +25,7 @@ import CreateBlog from './pages/admin/createBlog/CreateBlog.js';
 import BlogManager from './pages/admin/blogManager/BlogManager.js';
 import StatsAdmin from './pages/admin/statsAdmin/StatsAdmin.js';
 import SpeciesManager from './pages/admin/speciesManager/SpeciesManager.js';
+import AbuseReportManager from './pages/admin/abuseReportManager/AbuseReportManager.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
@@ -224,6 +225,18 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/admin/reports"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AbuseReportManager />
+              </ProtectedRoute>
+            }
+          />
+
+
+
 
 
 

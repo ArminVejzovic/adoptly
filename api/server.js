@@ -21,6 +21,7 @@ import blogRoute from './routes/admin/blogRoute.js'
 import statsRoute from './routes/admin/statsRoute.js'
 import speciesRoute from './routes/admin/speciesRoute.js'
 import guestRoute from './routes/guest/guestRoute.js'
+import reportRoute from './routes/admin/abuseReportRoute.js'
 
 
 
@@ -52,6 +53,7 @@ app.use('/api/blog', blogRoute);
 app.use('/api/admin-stats', statsRoute);
 app.use('/api/species', speciesRoute);
 app.use('/api/guest', guestRoute);
+app.use('/api/admin/reports', reportRoute);
 
 
 const PORT = process.env.PORT || 3000;
