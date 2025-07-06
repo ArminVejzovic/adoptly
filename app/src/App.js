@@ -30,6 +30,8 @@ import DeleteReported from './pages/admin/deleteReported/DeleteReported.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
+import RatingsPage from './pages/ratingsPage/RatingsPage.js';
+
 import ProtectedRoute from './routes/ProtectedRoute';
 import PublicRoute from './routes/PublicRoute';
 
@@ -247,6 +249,14 @@ function App() {
 
 
 
+          <Route
+            path="/reviews"
+            element={
+              <ProtectedRoute allowedRoles={['user', 'owner']}>
+                <RatingsPage />
+              </ProtectedRoute>
+            }
+          />
 
 
         <Route path="/guest-dashboard" element={<GuestDashboard />} />

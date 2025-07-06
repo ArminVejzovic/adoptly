@@ -30,7 +30,12 @@ const UserDashboard = () => {
       title: 'AI Animal Recommender ',
       icon: <FaPaw size={40} />,
       link: '/ai-recommender'
-    }
+    },
+    {
+          title: 'Reviews',
+          icon: <FaPaw size={40} />,
+          link: '/reviews'
+   }
   ];
 
   return (
