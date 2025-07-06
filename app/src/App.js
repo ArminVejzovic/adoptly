@@ -26,6 +26,7 @@ import BlogManager from './pages/admin/blogManager/BlogManager.js';
 import StatsAdmin from './pages/admin/statsAdmin/StatsAdmin.js';
 import SpeciesManager from './pages/admin/speciesManager/SpeciesManager.js';
 import AbuseReportManager from './pages/admin/abuseReportManager/AbuseReportManager.js';
+import DeleteReported from './pages/admin/deleteReported/DeleteReported.js';
 
 import GuestDashboard from './pages/guest/guestDashboard/GuestDashboard.js';
 
@@ -235,6 +236,14 @@ function App() {
             }
           />
 
+          <Route
+            path="/admin/handle-reports"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <DeleteReported />
+              </ProtectedRoute>
+            }
+          />
 
 
 
