@@ -8,5 +8,15 @@ const reviewSchema = new mongoose.Schema({
   comment: { type: String }
 }, { timestamps: true });
 
+reviewSchema.index(
+  { user: 1, targetUser: 1 },
+  { unique: true, partialFilterExpression: { targetUser: { $exists: true } } }
+);
+
+reviewSchema.index(
+  { user: 1, targetAnimal: 1 },
+  { unique: true, partialFilterExpression: { targetAnimal: { $exists: true } } }
+);
+
 const Review = mongoose.model('Review', reviewSchema);
 export default Review;
