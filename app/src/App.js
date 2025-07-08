@@ -34,6 +34,7 @@ import RatingsPage from './pages/ratingsPage/RatingsPage.js';
 
 import ProtectedRoute from './routes/ProtectedRoute';
 import PublicRoute from './routes/PublicRoute';
+import BlogOverview from './pages/blogOverview/BlogOverview.js';
 
 function App() {
   return (
@@ -252,6 +253,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['user', 'owner']}>
                 <RatingsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/blogs"
+            element={
+              <ProtectedRoute allowedRoles={['user', 'owner']}>
+                <BlogOverview />
               </ProtectedRoute>
             }
           />

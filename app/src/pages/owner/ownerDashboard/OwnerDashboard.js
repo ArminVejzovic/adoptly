@@ -30,6 +30,11 @@ const OwnerDashboard = () => {
       title: 'Reviews',
       icon: <FaPaw size={40} />,
       link: '/reviews'
+    },
+    {
+      title: 'Blogs',
+      icon: <FaPaw size={40} />,
+      link: '/blogs'
     }
   ];
 
