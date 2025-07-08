@@ -24,6 +24,7 @@ import guestRoute from './routes/guest/guestRoute.js'
 import reportRoute from './routes/admin/abuseReportRoute.js'
 import deleteReported from './routes/admin/resolveReportsRoute.js'
 import ratingsRoute from './routes/reviewRoute.js'
+import contractRoute from './routes/admin/contractRoute.js'
 
 
 
@@ -57,7 +58,8 @@ app.use('/api/species', speciesRoute);
 app.use('/api/guest', guestRoute);
 app.use('/api/admin/reports', reportRoute);
 app.use('/api/admin/resolve-reports', deleteReported);
-app.use('/api/review', ratingsRoute)
+app.use('/api/review', ratingsRoute);
+app.use('/api/contract', contractRoute);
 
 
 const PORT = process.env.PORT || 3000;

@@ -35,6 +35,7 @@ import RatingsPage from './pages/ratingsPage/RatingsPage.js';
 import ProtectedRoute from './routes/ProtectedRoute';
 import PublicRoute from './routes/PublicRoute';
 import BlogOverview from './pages/blogOverview/BlogOverview.js';
+import Contract from './pages/admin/contracts/Contracts.js';
 
 function App() {
   return (
@@ -262,6 +263,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['user', 'owner']}>
                 <BlogOverview />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/contracts"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <Contract />
               </ProtectedRoute>
             }
           />
