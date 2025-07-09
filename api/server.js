@@ -1,7 +1,9 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import { connectDB } from "./config/db.js";
 import cors from 'cors';
+import { Server } from 'socket.io';
+import http from 'http';
+import { socketHandler } from './utils/socketHandler.js';
 
 import authRoutes from './routes/authRoute.js';
 import ownerRoutes from './routes/owner/addAnimalRoute.js';
@@ -26,6 +28,10 @@ import deleteReported from './routes/admin/resolveReportsRoute.js'
 import ratingsRoute from './routes/reviewRoute.js'
 import contractRoute from './routes/admin/contractRoute.js'
 
+import chatRoutes from './routes/chatRoutes.js'
+import messageRoutes from './routes/messageRoutes.js'
+import userRoutes from './routes/userRoutes.js';
+import { ServerClosedEvent } from 'mongodb';
 
 
 const app = express();
@@ -36,6 +42,16 @@ app.use(cors({
     credentials: true
 }));
 
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:5000/chat',
+    methods: ['GET', 'POST'],
+  }
+});
+
+socketHandler(io); 
 
 
 app.use('/api/auth', authRoutes);
@@ -61,10 +77,14 @@ app.use('/api/admin/resolve-reports', deleteReported);
 app.use('/api/review', ratingsRoute);
 app.use('/api/contract', contractRoute);
 
+app.use('/api/chats', chatRoutes);
+app.use('/api/messages', messageRoutes);
+app.use('/api/users', userRoutes);
+
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectDB();
     console.log(`Server running on port ${PORT}`)
 });

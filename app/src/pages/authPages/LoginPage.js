@@ -12,7 +12,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Automatski redirect ako je već logovan
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');

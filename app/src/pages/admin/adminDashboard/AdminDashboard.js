@@ -64,6 +64,11 @@ const AdminDashboard = () => {
       title: 'Contracts',
       icon: <FaUserCog size={40} />,
       link: '/contracts'
+    }, 
+    {
+      title: 'Chat',
+      icon: <FaUserCog size={40} />,
+      link: '/chat'
     }
 
 

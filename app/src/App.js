@@ -36,6 +36,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import PublicRoute from './routes/PublicRoute';
 import BlogOverview from './pages/blogOverview/BlogOverview.js';
 import Contract from './pages/admin/contracts/Contracts.js';
+import Chat from './pages/Chat/Chat.js';
 
 function App() {
   return (
@@ -276,6 +277,14 @@ function App() {
             }
           />
 
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'owner', 'user']}>
+                <Chat />
+              </ProtectedRoute>
+            }
+          />
 
 
           
