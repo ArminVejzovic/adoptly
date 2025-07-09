@@ -38,6 +38,8 @@ import BlogOverview from './pages/blogOverview/BlogOverview.js';
 import Contract from './pages/admin/contracts/Contracts.js';
 import Chat from './pages/Chat/Chat.js';
 import AdminChat from './pages/admin/adminChat/AdminChat.js';
+import ForgotPassword from './pages/authPages/ForgotPassword.js';
+import ResetPassword from './pages/authPages/ResetPassword.js';
 
 function App() {
   return (
@@ -296,6 +298,8 @@ function App() {
             }
           />
 
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           
 

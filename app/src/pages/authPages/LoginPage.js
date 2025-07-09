@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './auth.css';
+import { Link } from 'react-router-dom';
+import ForgotPassword from './ForgotPassword';
 
 const LoginPage = () => {
   const BASE_URL = process.env.REACT_APP_BACKEND_URL;
@@ -104,6 +106,11 @@ const LoginPage = () => {
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
+
+        <Link to="/forgot-password" className="forgot-link">
+          Forgot your password?
+        </Link>
+
         {error.password && <p className="error-msg">{error.password}</p>}
         {error.general && <p className="error-msg">{error.general}</p>}
 

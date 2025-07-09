@@ -91,3 +91,16 @@
   .show-hide-btn:hover {
     background-color: #21867a;
   }
+
+  .forgot-link {
+  display: block;
+  margin-top: 0px;
+  color: #0077cc;
+  text-align: right;
+  text-decoration: none;
+  padding-bottom: 12px;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
