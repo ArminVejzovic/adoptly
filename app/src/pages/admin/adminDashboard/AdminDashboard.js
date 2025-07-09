@@ -3,6 +3,7 @@ import { FaUserCog, FaUsers, FaClipboardList, FaBlog } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
 import './AdminDashboard.css';
+import MotivationBanner from '../../../components/motivationBanner/MotivationBanner';
 
 const AdminDashboard = () => {
   const dashboardItems = [
@@ -83,6 +84,7 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-container">
       <h2>Admin Dashboard</h2>
+      {/* <MotivationBanner />*/}
       <div className="dashboard-grid">
         {dashboardItems.map((item, idx) => (
           <Link to={item.link} key={idx} className="dashboard-item">

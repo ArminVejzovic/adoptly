@@ -1,0 +1,10 @@
+.motivation-banner {
+  background: #e0f7fa;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-left: 5px solid #00796b;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #004d40;
+}
