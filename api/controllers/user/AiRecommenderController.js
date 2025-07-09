@@ -24,15 +24,15 @@ export const getPetRecommendation = async (req, res) => {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: "deepseek/deepseek-r1:free", // možeš promijeniti npr. na mistralai/mistral-7b-instruct:free
+        model: "deepseek/deepseek-r1:free", 
         messages: [{ role: "user", content: prompt }],
       },
       {
         headers: {
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:5000', // možeš svoj frontend URL
-          'X-Title': 'Adoptly', // ime tvoje aplikacije
+          'HTTP-Referer': 'http://localhost:5000',
+          'X-Title': 'Adoptly',
         },
       }
     );

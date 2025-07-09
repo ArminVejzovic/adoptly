@@ -37,6 +37,7 @@ import PublicRoute from './routes/PublicRoute';
 import BlogOverview from './pages/blogOverview/BlogOverview.js';
 import Contract from './pages/admin/contracts/Contracts.js';
 import Chat from './pages/Chat/Chat.js';
+import AdminChat from './pages/admin/adminChat/AdminChat.js';
 
 function App() {
   return (
@@ -282,6 +283,15 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['admin', 'owner', 'user']}>
                 <Chat />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/chat-gpt"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminChat />
               </ProtectedRoute>
             }
           />

@@ -28,11 +28,12 @@ import deleteReported from './routes/admin/resolveReportsRoute.js'
 import ratingsRoute from './routes/reviewRoute.js'
 import contractRoute from './routes/admin/contractRoute.js'
 
+
 import chatRoutes from './routes/chatRoutes.js'
 import messageRoutes from './routes/messageRoutes.js'
 import userRoutes from './routes/userRoutes.js';
-import { ServerClosedEvent } from 'mongodb';
 
+import adminChatRoute from './routes/admin/adminChatRoute.js';
 
 const app = express();
 
@@ -80,6 +81,8 @@ app.use('/api/contract', contractRoute);
 app.use('/api/chats', chatRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
+
+app.use('/api/adminchat', adminChatRoute);
 
 
 const PORT = process.env.PORT || 3000;

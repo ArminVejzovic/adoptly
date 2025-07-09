@@ -69,6 +69,11 @@ const AdminDashboard = () => {
       title: 'Chat',
       icon: <FaUserCog size={40} />,
       link: '/chat'
+    },
+    {
+      title: 'Chat GPT',
+      icon: <FaUserCog size={40} />,
+      link: '/chat-gpt'
     }
 
 
