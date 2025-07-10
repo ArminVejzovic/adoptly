@@ -22,7 +22,7 @@ const NotificationBell = () => {
   useEffect(() => {
     fetchNotifications();
 
-    const interval = setInterval(fetchNotifications, 10000); // refresh svakih 10s
+    const interval = setInterval(fetchNotifications, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -41,7 +41,7 @@ const NotificationBell = () => {
       await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/api/notifications/${id}/read`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchNotifications(); // refresh nakon update
+      fetchNotifications();
     } catch (err) {
       console.error('Failed to mark as read', err);
     }

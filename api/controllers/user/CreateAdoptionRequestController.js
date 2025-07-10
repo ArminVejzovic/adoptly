@@ -1,5 +1,7 @@
 import AdoptionRequest from '../../models/AdoptionRequest.js';
 import Animal from '../../models/Animal.js';
+import Notification from '../../models/Notifications.js';
+import User from '../../models/User.js';
 
 
 export const createAdoptionRequest = async (req, res) => {
@@ -31,6 +33,19 @@ export const createAdoptionRequest = async (req, res) => {
     });
 
     await request.save();
+
+    const sender = await User.findById(req.user._id).select('username');
+
+    await Notification.create({
+      recipient: animal.owner,
+      type: 'adoptionRequest',
+      content: `${sender.username} sent you an adoption request for animal "${animal.name}".`,
+      link: `/adoption-requests-owner`,
+      relatedUser: sender._id,
+      relatedEntity: request._id,
+      entityModel: 'AdoptionRequest'
+    });
+
     res.status(201).json(request);
   } catch (err) {
     console.error(err);
