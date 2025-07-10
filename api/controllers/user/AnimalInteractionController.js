@@ -1,17 +1,36 @@
 import Like from '../../models/Like.js';
 import Comment from '../../models/Comment.js';
 import WishList from '../../models/WishList.js';
+import Notification from '../../models/Notifications.js';
+import Animal from '../../models/Animal.js';
 
 export const toggleLike = async (req, res) => {
   const { animalId } = req.params;
   const userId = req.user._id;
 
   const existing = await Like.findOne({ user: userId, animal: animalId });
+  const animal = await Animal.findById(animalId).select('owner name');
+
+  if (!animal) return res.status(404).json({ message: 'Animal not found.' });
+
   if (existing) {
     await existing.deleteOne();
     return res.json({ liked: false, message: 'Disliked' });
   } else {
-    await Like.create({ user: userId, animal: animalId });
+    const like = await Like.create({ user: userId, animal: animalId });
+
+    if (animal.owner.toString() !== userId.toString()) {
+      await Notification.create({
+        recipient: animal.owner,
+        type: 'like',
+        content: `${req.user.username} liked your animal "${animal.name}".`,
+        link: `/my-animals`,
+        relatedUser: userId,
+        relatedEntity: like._id,
+        entityModel: 'Like'
+      });
+    }
+
     return res.json({ liked: true, message: 'Liked' });
   }
 };
@@ -39,17 +58,30 @@ export const addComment = async (req, res) => {
     return res.status(400).json({ message: 'Comment text is required.' });
   }
 
+  const animal = await Animal.findById(animalId);
+  if (!animal) return res.status(404).json({ message: 'Animal not found.' });
+
   const comment = await Comment.create({
     user: userId,
     animal: animalId,
     text
   });
 
-  const populated = await comment.populate('user', 'username');
+  if (animal.owner.toString() !== userId.toString()) {
+    await Notification.create({
+      recipient: animal.owner,
+      type: 'comment',
+      content: `${req.user.username} commented on your animal "${animal.name}".`,
+      link: `/my-animals`,
+      relatedUser: userId,
+      relatedEntity: comment._id,
+      entityModel: 'Comment'
+    });
+  }
 
+  const populated = await comment.populate('user', 'username');
   res.status(201).json(populated);
 };
-
 export const deleteComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req.user._id;
