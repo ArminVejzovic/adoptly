@@ -3,6 +3,7 @@ import { FaPlusCircle, FaPaw, FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
 import './OwnerDashboard.css';
+import NotificationBell from '../../../components/notificationBell/NotificationBell';
 
 const OwnerDashboard = () => {
   const dashboardItems = [
@@ -46,6 +47,7 @@ const OwnerDashboard = () => {
   return (
     <div className="dashboard-container">
       <h2>Owner Dashboard</h2>
+      <NotificationBell />
       <div className="dashboard-grid">
         {dashboardItems.map((item, idx) => (
           <Link to={item.link} key={idx} className="dashboard-item">

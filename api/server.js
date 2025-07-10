@@ -35,6 +35,7 @@ import userRoutes from './routes/userRoutes.js';
 
 import adminChatRoute from './routes/admin/adminChatRoute.js';
 import motivationRoute from './routes/motivationRoute.js';
+import notificationRoute from './routes/notificationsRoute.js'
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use('/api/users', userRoutes);
 
 app.use('/api/adminchat', adminChatRoute);
 app.use('/api/motivation', motivationRoute);
+app.use('/api/notifications', notificationRoute);
 
 
 const PORT = process.env.PORT || 3000;

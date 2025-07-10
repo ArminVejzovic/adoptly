@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
 import './AdminDashboard.css';
 import MotivationBanner from '../../../components/motivationBanner/MotivationBanner';
+import NotificationBell from '../../../components/notificationBell/NotificationBell';
 
 const AdminDashboard = () => {
   const dashboardItems = [
@@ -84,6 +85,7 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-container">
       <h2>Admin Dashboard</h2>
+      <NotificationBell />
       {/* <MotivationBanner />*/}
       <div className="dashboard-grid">
         {dashboardItems.map((item, idx) => (
