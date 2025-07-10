@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './AvailableAnimals.css';
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 const AvailableAnimals = () => {
   const [animals, setAnimals] = useState([]);
@@ -20,6 +22,12 @@ const AvailableAnimals = () => {
   const [commentReportDescription, setCommentReportDescription] = useState('');
   const [commentReportFeedback, setCommentReportFeedback] = useState(null);
 
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [showGallery, setShowGallery] = useState(false);
+
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  const loggedInUsername = localStorage.getItem('username');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -151,19 +159,46 @@ const AvailableAnimals = () => {
       { headers }
     );
 
-    setAnimals((prev) =>
-      prev.map((a) =>
+    setAnimals((prev) => {
+      const updatedAnimals = prev.map((a) =>
         a._id === animalId ? { ...a, stats: res.data } : a
-      )
-    );
+      );
+
+      // Ako je trenutno prikazan animal, ažuriraj i njega
+      if (selectedAnimal?._id === animalId) {
+        const updatedAnimal = updatedAnimals.find((a) => a._id === animalId);
+        setSelectedAnimal(updatedAnimal);
+      }
+
+      return updatedAnimals;
+    });
+};
+
+
+  const fetchGalleryImages = async (animalId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+       const res = await axios.get(
+          `http://localhost:3000/api/interact/images/${animalId}`,
+          { headers }
+        );
+      setGalleryImages(res.data);
+    } catch (err) {
+      console.error('Failed to load gallery images:', err);
+      setGalleryImages([]);
+    }
   };
 
   const openAnimal = async (animal) => {
-    setSelectedAnimal(animal);
+    const freshAnimal = animals.find((a) => a._id === animal._id);
+    setSelectedAnimal(freshAnimal);
     setMessage('');
     setFeedback(null);
     setCommentText('');
     setComments([]);
+    fetchGalleryImages(animal._id);
+    updateStats(animal._id);
 
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
@@ -180,6 +215,12 @@ const AvailableAnimals = () => {
 
     await fetchComments(animal._id);
   };
+
+  const isLiked = selectedAnimal?.stats?.isLiked;
+  const isSaved = selectedAnimal?.stats?.isSaved;
+
+  console.log(isLiked);
+  console.log(isSaved);
 
   const handleSubmitReport = async () => {
     if (!reportDescription.trim()) {
@@ -213,6 +254,17 @@ const AvailableAnimals = () => {
         error.response?.data?.message || 'Failed to submit report.'
       );
     }
+  };
+
+  const updateSelectedAnimal = (animalId) => {
+    setAnimals((prev) => {
+      const updatedAnimals = prev.map((a) =>
+        a._id === animalId ? { ...a, stats: a.stats } : a
+      );
+      const updatedAnimal = updatedAnimals.find((a) => a._id === animalId);
+      setSelectedAnimal(updatedAnimal);
+      return updatedAnimals;
+    });
   };
 
   const handleSubmitCommentReport = async () => {
@@ -250,10 +302,7 @@ const AvailableAnimals = () => {
   };
 
 
-  const user = JSON.parse(localStorage.getItem('user'));
-
   
-  const loggedInUsername = localStorage.getItem('username');
 
   return (
     <div className="adoption-gallery">
@@ -318,10 +367,62 @@ const AvailableAnimals = () => {
               <strong>Description:</strong>{' '}
               {selectedAnimal.description}
             </p>
+            
+            {selectedAnimal?.location?.coordinates?.length === 2 && (
+              <div className="map-container">
+                <MapContainer
+                  center={[selectedAnimal.location.coordinates[1], selectedAnimal.location.coordinates[0]]}
+                  zoom={13}
+                  scrollWheelZoom={false}
+                  style={{ height: '300px', width: '100%', marginBottom: '1rem' }}
+                >
+                  <TileLayer
+                    attribution='&copy; OpenStreetMap contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[selectedAnimal.location.coordinates[1], selectedAnimal.location.coordinates[0]]}>
+                    <Popup>{selectedAnimal.name}'s Location</Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
+            )}
+
+
+            {galleryImages.length > 0 && (
+              <div style={{ margin: '12px 0' }}>
+                <button onClick={() => setShowGallery(true)}>
+                  📷 View Gallery ({galleryImages.length})
+                </button>
+              </div>
+            )}
+
+            {showGallery && (
+              <div className="modal-overlay" onClick={() => setShowGallery(false)}>
+                <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                  <button className="close-button" onClick={() => setShowGallery(false)}>×</button>
+                  <h3>Photo Gallery</h3>
+                  <div className="gallery-images">
+                    {galleryImages.map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={`data:${img.contentType};base64,${img.base64}`}
+                        alt={`Gallery ${idx}`}
+                        className="gallery-thumbnail"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
 
             <div className="actions-row">
-              <button onClick={handleToggleLike}>👍 Like</button>
-              <button onClick={handleToggleWishlist}>💾 Save</button>
+              <button onClick={handleToggleLike}>
+                {selectedAnimal?.stats?.isLiked ? '👎 Unlike' : '👍 Like'}
+              </button>
+              <button onClick={handleToggleWishlist}>
+                {selectedAnimal?.stats?.isSaved ? '❌ Unsave' : '💾 Save'}
+              </button>
               <button
                 className="report-btn"
                 onClick={() => setShowReportModal(true)}
@@ -446,6 +547,25 @@ const AvailableAnimals = () => {
           </div>
         </div>
       )}
+
+      {showReportModal && (
+        <div className="modal-overlay" onClick={() => setShowReportModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={() => setShowReportModal(false)}>×</button>
+            <h3>Report Animal</h3>
+            <textarea
+              placeholder="Describe the issue with this animal..."
+              value={reportDescription}
+              onChange={(e) => setReportDescription(e.target.value)}
+            />
+            <button onClick={handleSubmitReport}>Submit Report</button>
+            {reportFeedback && (
+              <p className="feedback">{reportFeedback}</p>
+            )}
+          </div>
+        </div>
+      )}
+
 
     </div>
   );

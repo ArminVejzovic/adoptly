@@ -3,6 +3,7 @@ import Comment from '../../models/Comment.js';
 import WishList from '../../models/WishList.js';
 import Notification from '../../models/Notifications.js';
 import Animal from '../../models/Animal.js';
+import AnimalImage from '../../models/AnimalImage.js';
 
 export const toggleLike = async (req, res) => {
   const { animalId } = req.params;
@@ -96,16 +97,32 @@ export const deleteComment = async (req, res) => {
   res.json({ message: 'Comment deleted' });
 };
 
-export const getAnimalStats = async (req, res) => {
-  const { animalId } = req.params;
+export const getStats = async (req, res) => {
+  try {
+    const animalId = req.params.animalId;
+    const userId = req.user._id;
 
-  const [likes, comments, saves] = await Promise.all([
-    Like.countDocuments({ animal: animalId }),
-    Comment.countDocuments({ animal: animalId }),
-    WishList.countDocuments({ animal: animalId }),
-  ]);
+    const [likes, comments, saves] = await Promise.all([
+      Like.countDocuments({ animal: animalId }),
+      Comment.countDocuments({ animal: animalId }),
+      WishList.countDocuments({ animal: animalId }),
+    ]);
 
-  res.json({ likes, comments, saves });
+
+    const isLiked = await Like.exists({ animal: animalId, user: userId });
+    const isSaved = await WishList.exists({ animal: animalId, user: userId });
+
+    res.json({
+      likes,
+      comments,
+      saves,
+      isLiked: !!isLiked,
+      isSaved: !!isSaved
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching stats' });
+  }
 };
 
 export const getComments = async (req, res) => {
@@ -116,4 +133,22 @@ export const getComments = async (req, res) => {
     .sort({ createdAt: 1 });
 
   res.json(comments);
+};
+
+export const getAnimalImages = async (req, res) => {
+  try {
+    const { animalId } = req.params;
+
+    const images = await AnimalImage.find({ animal: animalId });
+
+    const formattedImages = images.map((img) => ({
+      base64: Buffer.from(img.image.data).toString('base64'),
+      contentType: img.image.contentType,
+    }));
+
+    res.json(formattedImages);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching animal images.' });
+  }
 };
