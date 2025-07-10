@@ -19,6 +19,7 @@ const PublicProfile = () => {
           }
         );
         setUser(response.data);
+        
       } catch (error) {
         console.error('Error fetching public profile:', error);
       }
@@ -59,6 +60,7 @@ const PublicProfile = () => {
         <p>Created: {new Date(user.createdAt).toLocaleDateString()}</p>
         <p>Last Update: {new Date(user.updatedAt).toLocaleDateString()}</p>
       </div>
+      
 
       <div className="profile-actions">
         <ReportButton reportedType="user" reportedId={user._id} />
