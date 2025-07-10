@@ -1,7 +1,6 @@
 import User from '../models/User.js';
+import Review from '../models/Review.js';
 import multer from 'multer';
-import path from 'path';
-
 const storage = multer.memoryStorage();
 export const upload = multer({ storage });
 
@@ -103,3 +102,39 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+export const getUserReviewsStats = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    // Provjera da li postoji korisnik
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // Agregacija review-a za korisnika
+    const stats = await Review.aggregate([
+      { $match: { targetUser: user._id } },
+      {
+        $group: {
+          _id: '$targetUser',
+          averageRating: { $avg: '$rating' },
+          totalReviews: { $sum: 1 }
+        }
+      }
+    ]);
+
+    if (stats.length === 0) {
+      return res.status(200).json({
+        averageRating: 0,
+        totalReviews: 0
+      });
+    }
+
+    res.status(200).json({
+      averageRating: stats[0].averageRating.toFixed(1),
+      totalReviews: stats[0].totalReviews
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};

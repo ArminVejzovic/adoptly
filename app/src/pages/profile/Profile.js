@@ -16,6 +16,21 @@ const Profile = () => {
     newPassword: ''
   });
 
+  const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0 });
+
+  useEffect(() => {
+    const fetchReviewsStats = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3000/api/profile/reviews/${user._id}`);
+        setReviewStats(res.data);
+      } catch (error) {
+        console.error('Error fetching review stats:', error);
+      }
+    };
+
+    if (user) fetchReviewsStats();
+  }, [user]);
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -125,6 +140,16 @@ const Profile = () => {
           <div className="no-picture">No Picture</div>
         )}
 
+        <div className="profile-rating">
+          <strong>Rating:</strong>{' '}
+          {[...Array(5)].map((_, index) => (
+            <span key={index}>
+              {index < Math.round(reviewStats.averageRating) ? '⭐' : '☆'}
+            </span>
+          ))}{' '}
+          ({reviewStats.averageRating} / 5) — {reviewStats.totalReviews} reviews
+        </div>
+
         {editMode ? (
           <>
             <label>Username:</label>
@@ -151,8 +176,6 @@ const Profile = () => {
         ) : (
           <h3>{user.username}</h3>
         )}
-
-        {user.isVerified && <div className="verified-badge">Verified ✓</div>}
       </div>
 
       <div className="section">
