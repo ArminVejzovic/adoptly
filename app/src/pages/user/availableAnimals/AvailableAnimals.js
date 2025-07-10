@@ -25,6 +25,8 @@ const AvailableAnimals = () => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [showGallery, setShowGallery] = useState(false);
 
+  const [showAdoptionRequestForm, setShowAdoptionRequestForm] = useState(false);
+
 
   const user = JSON.parse(localStorage.getItem('user'));
   const loggedInUsername = localStorage.getItem('username');
@@ -164,7 +166,6 @@ const AvailableAnimals = () => {
         a._id === animalId ? { ...a, stats: res.data } : a
       );
 
-      // Ako je trenutno prikazan animal, ažuriraj i njega
       if (selectedAnimal?._id === animalId) {
         const updatedAnimal = updatedAnimals.find((a) => a._id === animalId);
         setSelectedAnimal(updatedAnimal);
@@ -363,6 +364,11 @@ const AvailableAnimals = () => {
             <p>
               <strong>Age:</strong> {selectedAnimal.age}
             </p>
+            <p><strong>Species:</strong> {selectedAnimal.species?.name}</p>
+            <p><strong>Gender:</strong> {selectedAnimal.gender}</p>
+            <p><strong>Size:</strong> {selectedAnimal.size}</p>
+            <p><strong>Vaccinated:</strong> {selectedAnimal.vaccinated ? 'Yes' : 'No'}</p>
+            <p><strong>Sterilized:</strong> {selectedAnimal.sterilized ? 'Yes' : 'No'}</p>
             <p>
               <strong>Description:</strong>{' '}
               {selectedAnimal.description}
@@ -430,6 +436,37 @@ const AvailableAnimals = () => {
                 🚨 Report Animal
               </button>
             </div>
+            <br></br>
+            {alreadyRequested ? (
+                <p>You’ve already sent an adoption request for this animal.</p>
+              ) : !showAdoptionRequestForm ? (
+                <button
+                  onClick={() => setShowAdoptionRequestForm(true)}
+                  className="submit-button"
+                >
+                  Send Adoption Request
+                </button>
+              ) : (
+                <>
+                  <textarea
+                    placeholder="Message to owner (optional)"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="message-textarea"
+                  />
+                  <div className="margin-top-10">
+                    <button onClick={handleAdopt} className="submit-button">
+                      Confirm Send Request
+                    </button>
+                    <button
+                      onClick={() => setShowAdoptionRequestForm(false)}
+                      className="cancel-button"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              )}
 
             <div className="comments-list">
               {comments.map((comment) => {
@@ -467,7 +504,7 @@ const AvailableAnimals = () => {
                             setCommentReportFeedback(null);
                           }}
                         >
-                          🚩 Report
+                          🚩
                         </button>
                       )}
                     </div>
@@ -490,29 +527,6 @@ const AvailableAnimals = () => {
                 Comment
               </button>
             </div>
-
-            {alreadyRequested ? (
-              <p style={{ color: '#999', marginTop: '12px' }}>
-                You’ve already sent an adoption request for
-                this animal.
-              </p>
-            ) : (
-              <>
-                <textarea
-                  placeholder="Message to owner (optional)"
-                  value={message}
-                  onChange={(e) =>
-                    setMessage(e.target.value)
-                  }
-                />
-                <button
-                  onClick={handleAdopt}
-                  className="submit-button"
-                >
-                  Send Adoption Request
-                </button>
-              </>
-            )}
 
             {feedback && (
               <p className="feedback">{feedback}</p>
