@@ -54,10 +54,12 @@ const AdoptionRequests = () => {
         requests.map(req => (
           <div key={req._id} className="request-card">
             <p><strong>Animal:</strong> {req.animal?.name}</p>
-            <p><strong>Requester:</strong> {req.requester?.username}</p>
-            <Link to={`/profile/${req.requester?.username}`}>
-              <button>View Profile</button>
-            </Link>
+            <div className="requester-line">
+              <p><strong>Requester:</strong></p>
+              <Link to={`/profile/${req.requester?.username}`}>
+                <p className="requester-username">{req.requester?.username}</p>
+              </Link>
+            </div>
             <p><strong>Message:</strong> {req.message || 'No message'}</p>
             <p><strong>Status:</strong> {req.status}</p>
             {req.status === 'pending' && (
