@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
@@ -49,6 +49,8 @@ const AddAnimal = () => {
     species: '',
     coordinates: [18.4131, 43.8563],
   });
+  const profileImageRef = useRef(null);
+  const imagesRef = useRef(null);
 
   const handleChange = e => {
     const { name, value, type, checked, files } = e.target;
@@ -81,6 +83,11 @@ const AddAnimal = () => {
       const updatedPreviews = [...prev.imagePreviews];
       updatedImages.splice(index, 1);
       updatedPreviews.splice(index, 1);
+
+      if (updatedImages.length === 0 && imagesRef.current) {
+        imagesRef.current.value = '';
+      }
+
       return {
         ...prev,
         images: updatedImages,
@@ -144,7 +151,7 @@ const AddAnimal = () => {
       <form onSubmit={handleSubmit} className="animal-form" encType="multipart/form-data">
         <input name="name" placeholder="Name" value={formData.name} onChange={handleChange} required />
         <input name="breed" placeholder="Breed" value={formData.breed} onChange={handleChange} />
-        <input name="age" type="number" placeholder="Age" value={formData.age} onChange={handleChange} />
+        <input name="age" type="number" step="0.1" placeholder="Age (e.g. 1.5)" value={formData.age} onChange={handleChange} />
 
         <select name="gender" value={formData.gender} onChange={handleChange}>
           <option value="male">Male</option>
@@ -171,7 +178,7 @@ const AddAnimal = () => {
 
         <label>
           Profile Image:
-          <input type="file" name="profileImage" accept="image/*" onChange={handleChange} />
+          <input type="file" name="profileImage" accept="image/*" onChange={handleChange} ref={profileImageRef} />
         </label>
         {formData.profileImagePreview && (
           <div className="image-preview">
@@ -181,7 +188,7 @@ const AddAnimal = () => {
 
         <label>
           Additional Images:
-          <input type="file" name="images" accept="image/*" multiple onChange={handleChange} />
+          <input type="file" name="images" accept="image/*" multiple onChange={handleChange} ref={imagesRef} />
         </label>
         <div className="image-preview-list">
           {formData.imagePreviews.map((src, idx) => (
