@@ -12,7 +12,7 @@ import Review from '../../models/Review.js';
 
 export const getAdminStats = async (req, res) => {
   try {
-    const [userRoles, animalStats, adoptionStatus, dailyActivity, extras] = await Promise.all([
+    const [userRoles, animalStats, adoptionStatus, extras] = await Promise.all([
       User.aggregate([
         { $group: { _id: "$role", count: { $sum: 1 } } }
       ]),
@@ -23,23 +23,6 @@ export const getAdminStats = async (req, res) => {
 
       AdoptionRequest.aggregate([
         { $group: { _id: "$status", count: { $sum: 1 } } }
-      ]),
-
-      User.aggregate([
-        {
-          $match: {
-            createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }
-          }
-        },
-        {
-          $group: {
-            _id: {
-              $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
-            },
-            registrations: { $sum: 1 }
-          }
-        },
-        { $sort: { _id: 1 } }
       ]),
 
       Promise.all([
@@ -60,7 +43,6 @@ export const getAdminStats = async (req, res) => {
       userRoles,
       animalStats,
       adoptionStatus,
-      dailyActivity,
       extraCounts: {
         blogPosts: extras[0],
         chats: extras[1],

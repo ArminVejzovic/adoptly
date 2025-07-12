@@ -41,16 +41,7 @@ const StatsAdmin = () => {
     <div className="stats-dashboard">
       <h2>Admin Dashboard Overview</h2>
 
-      <div className="stats-cards">
-        {Object.entries(stats.extraCounts).map(([key, value]) => (
-          <div className="stat-card" key={key}>
-            <h4>{key.replace(/([A-Z])/g, ' $1')}</h4>
-            <p>{value}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="charts-container">
+       <div className="charts-container">
         <div className="chart-box">
           <h4>User Roles</h4>
           <PieChart width={300} height={250}>
@@ -73,7 +64,7 @@ const StatsAdmin = () => {
 
         <div className="chart-box">
           <h4>Adoption Status</h4>
-          <BarChart width={400} height={250} data={stats.adoptionStatus}>
+          <BarChart width={350} height={250} data={stats.adoptionStatus}>
             <XAxis dataKey="_id" />
             <YAxis />
             <Tooltip />
@@ -81,15 +72,16 @@ const StatsAdmin = () => {
           </BarChart>
         </div>
 
-        <div className="chart-box">
-          <h4>Registrations Per Day</h4>
-          <BarChart width={500} height={250} data={stats.dailyActivity}>
-            <XAxis dataKey="_id" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="registrations" fill="#82ca9d" />
-          </BarChart>
-        </div>
+      <div className="stats-cards">
+        {Object.entries(stats.extraCounts).map(([key, value]) => (
+          <div className="stat-card" key={key}>
+            <h4>{key.replace(/([A-Z])/g, ' $1')}</h4>
+            <p>{value}</p>
+          </div>
+        ))}
+      </div>
+
+     
       </div>
     </div>
   );
