@@ -177,13 +177,7 @@ const RatingsPage = () => {
 
       {selected && (
         <div className="modal-overlay">
-          <div className="modal-window">
-            <button
-              className="close-button"
-              onClick={() => setSelected(null)}
-            >
-              ×
-            </button>
+          <div className="modal-content">
             <h3>Rate {selected.name}</h3>
             {renderStars()}
             <textarea
@@ -191,8 +185,8 @@ const RatingsPage = () => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <div className="modal-actions">
-              <button className="cancel-btn" onClick={() => setSelected(null)}>Cancel</button>
+            <div className="actions-rpw">
+              <button className="submit-btn" onClick={() => setSelected(null)}>Cancel</button>
               <button className="submit-btn" onClick={submitReview}>Submit</button>
             </div>
             {feedback && <p className="feedback">{feedback}</p>}

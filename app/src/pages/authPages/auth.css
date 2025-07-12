@@ -86,6 +86,7 @@
     cursor: pointer;
     line-height: 1;
     height: auto;
+    width: 40px;
   }
   
   .show-hide-btn:hover {
