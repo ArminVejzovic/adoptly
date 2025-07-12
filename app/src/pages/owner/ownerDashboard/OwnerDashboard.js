@@ -28,7 +28,7 @@ const OwnerDashboard = () => {
       </div>
 
       <div className="dashboard-header">
-        <h2>Welcome to Your Dashboard</h2>
+        <h2>Welcome, Animal Owner</h2>
       </div>
 
       <div className="dashboard-grid">

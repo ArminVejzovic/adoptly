@@ -34,7 +34,7 @@ const AdminDashboard = () => {
       </div>
 
       <div className="dashboard-header">
-        <h2>Welcome to Your Dashboard</h2>
+        <h2>Welcome, Adoptly Admin</h2>
       </div>
 
       <div className="dashboard-grid">

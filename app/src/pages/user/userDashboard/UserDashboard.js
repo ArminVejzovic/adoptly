@@ -29,7 +29,7 @@ const UserDashboard = () => {
       </div>
 
       <div className="dashboard-header">
-        <h2>Welcome to Your Dashboard</h2>
+        <h2>Welcome, Animal Adopter!</h2>
       </div>
 
       <div className="dashboard-grid">
