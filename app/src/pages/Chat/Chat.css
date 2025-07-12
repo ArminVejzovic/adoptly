@@ -86,7 +86,7 @@
 }
 
 .message {
-  max-width: 70%;
+  max-width: 55%;
   padding: 0.8rem 1rem;
   border-radius: 20px;
   position: relative;
@@ -99,6 +99,7 @@
 .message.own {
   align-self: flex-end;
   background: #a7e2dd;
+  max-width: 55%;
 }
 
 .timestamp {
@@ -106,6 +107,7 @@
   color: #558b84;
   margin-top: 0.3rem;
   text-align: right;
+  word-break: keep-all;
 }
 
 .chat-input {
@@ -115,13 +117,16 @@
   background: #dff6f5;
 }
 
-.chat-input input {
+.chat-input textarea {
   flex: 1;
   padding: 0.7rem 1rem;
-  border-radius: 25px;
+  border-radius: 20px;
   border: 1px solid #2a9d8f;
   outline: none;
   font-size: 1rem;
+  resize: vertical;
+  min-height: 40px;
+  max-height: 150px;
 }
 
 .chat-input button {

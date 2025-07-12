@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Chat.css';
 import io from 'socket.io-client';
 import axios from 'axios';
@@ -18,6 +18,13 @@ const Chat = () => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
@@ -108,6 +115,17 @@ const Chat = () => {
     return <div className="chat-placeholder">Loading user...</div>;
   }
 
+  const formatTimestamp = (isoString) => {
+    const date = new Date(isoString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  };
+
   return (
     <div className="chat-container">
       <div className={`chat-sidebar ${sidebarOpen ? '' : 'hidden'}`}>
@@ -149,33 +167,35 @@ const Chat = () => {
             </div>
 
             <div className="chat-messages">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={msg.sender._id === currentUser._id ? 'message own' : 'message'}
-                >
-                  <span>{msg.text}</span>
-                  <div className="timestamp">
-                    {new Date(msg.createdAt).toLocaleTimeString()}
+              {messages.length > 0 ? (
+                messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={msg.sender._id === currentUser._id ? 'message own' : 'message'}
+                  >
+                    <span>{msg.text}</span>
+                    <div className="timestamp">
+                      {formatTimestamp(msg.createdAt)}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <div className="chat-placeholder">Send something to start the conversation</div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
 
             <div className="chat-input">
-              <input
+              <textarea
                 value={text}
                 onChange={e => setText(e.target.value)}
                 placeholder="Type a message..."
+                rows={2}
               />
               <button onClick={sendMessage}>Send</button>
             </div>
           </>
-        ) : (
-          <div className="chat-placeholder">
-            Send something to start the conversation
-          </div>
-        )}
+        ) : ( null )}
       </div>
     </div>
   );
