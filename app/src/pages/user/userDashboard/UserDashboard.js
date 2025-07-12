@@ -1,67 +1,45 @@
 import React from 'react';
-import { FaPlusCircle, FaPaw, FaUser } from 'react-icons/fa';
+import { FaPlusCircle, FaPaw, FaUser, FaHeart, FaComments, FaBlog, FaRobot } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
-import './UserDashboard.css';
 import NotificationBell from '../../../components/notificationBell/NotificationBell';
+import './UserDashboard.css';
 
 const UserDashboard = () => {
   const dashboardItems = [
-    {
-      title: 'Adopt Animal',
-      icon: <FaPlusCircle size={40} />,
-      link: '/available-animals'
-    },
-    {
-      title: 'Profile',
-      icon: <FaUser size={40} />,
-      link: '/profile'
-    },
-    {
-      title: 'Wishlist',
-      icon: <FaPaw size={40} />,
-      link: '/wishlist-animals'
-    }, 
-    {
-      title: 'Adoption Requests',
-      icon: <FaPaw size={40} />,
-      link: '/adoption-requests'
-    },
-    {
-      title: 'AI Animal Recommender ',
-      icon: <FaPaw size={40} />,
-      link: '/ai-recommender'
-    },
-    {
-          title: 'Reviews',
-          icon: <FaPaw size={40} />,
-          link: '/reviews'
-   },
-   {
-         title: 'Blogs',
-         icon: <FaPaw size={40} />,
-         link: '/blogs'
-    }, 
-    {
-      title: 'Chat',
-      icon: <FaPaw size={40} />,
-      link: '/chat'
-    }
+    { title: 'Adopt', icon: <FaPlusCircle />, link: '/available-animals' },
+    { title: 'Profile', icon: <FaUser />, link: '/profile' },
+    { title: 'Wishlist', icon: <FaHeart />, link: '/wishlist-animals' },
+    { title: 'Requests', icon: <FaPaw />, link: '/adoption-requests' },
+    { title: 'AI Recommender', icon: <FaRobot />, link: '/ai-recommender' },
+    { title: 'Reviews', icon: <FaComments />, link: '/reviews' },
+    { title: 'Blogs', icon: <FaBlog />, link: '/blogs' },
+    { title: 'Chat', icon: <FaComments />, link: '/chat' }
   ];
 
   return (
-    <div className="dashboard-container">
-      <h2>User Dashboard</h2>
-      <NotificationBell />
+    <div className="user-dashboard-container">
+      <div className="top-bar">
+        <div className="notifications">
+          <NotificationBell />
+        </div>
+        <div className="logout-btn">
+          <Logout />
+        </div>
+      </div>
+
+      <div className="dashboard-header">
+        <h2>Welcome to Your Dashboard</h2>
+      </div>
+
       <div className="dashboard-grid">
         {dashboardItems.map((item, idx) => (
-          <Link to={item.link} key={idx} className="dashboard-item">
-            {item.icon}
+          <Link to={item.link} key={idx} className="dashboard-card">
+            <div className="icon-wrapper">{item.icon}</div>
             <span>{item.title}</span>
           </Link>
         ))}
       </div>
-      <Logout />
     </div>
   );
 };

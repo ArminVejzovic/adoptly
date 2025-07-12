@@ -1,62 +1,44 @@
 import React from 'react';
-import { FaPlusCircle, FaPaw, FaUser } from 'react-icons/fa';
+import { FaPlusCircle, FaPaw, FaUser, FaComments, FaBlog } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Logout from '../../../components/logout/Logout';
-import './OwnerDashboard.css';
 import NotificationBell from '../../../components/notificationBell/NotificationBell';
+import './OwnerDashboard.css';
 
 const OwnerDashboard = () => {
   const dashboardItems = [
-    {
-      title: 'Add Animal',
-      icon: <FaPlusCircle size={40} />,
-      link: '/add-animal'
-    },
-    {
-      title: 'Profile',
-      icon: <FaUser size={40} />,
-      link: '/profile'
-    },
-    {
-      title: 'My Animals Page',
-      icon: <FaPaw size={40} />,
-      link: '/my-animals'
-    }, 
-    {
-      title: 'Adoption Requests',
-      icon: <FaPaw size={40} />,
-      link: '/adoption-requests-owner'
-    },
-    {
-      title: 'Reviews',
-      icon: <FaPaw size={40} />,
-      link: '/reviews'
-    },
-    {
-      title: 'Blogs',
-      icon: <FaPaw size={40} />,
-      link: '/blogs'
-    }, 
-    {
-      title: 'Chat',
-      icon: <FaPaw size={40} />,
-      link: '/chat'
-    }
+    { title: 'Add Animal', icon: <FaPlusCircle />, link: '/add-animal' },
+    { title: 'Profile', icon: <FaUser />, link: '/profile' },
+    { title: 'My Animals', icon: <FaPaw />, link: '/my-animals' },
+    { title: 'Adoption Requests', icon: <FaPaw />, link: '/adoption-requests-owner' },
+    { title: 'Reviews', icon: <FaComments />, link: '/reviews' },
+    { title: 'Blogs', icon: <FaBlog />, link: '/blogs' },
+    { title: 'Chat', icon: <FaComments />, link: '/chat' }
   ];
 
   return (
-    <div className="dashboard-container">
-      <h2>Owner Dashboard</h2>
-      <NotificationBell />
+    <div className="owner-dashboard-container">
+      <div className="top-bar">
+        <div className="notifications">
+          <NotificationBell />
+        </div>
+        <div className="logout-btn">
+          <Logout />
+        </div>
+      </div>
+
+      <div className="dashboard-header">
+        <h2>Welcome to Your Dashboard</h2>
+      </div>
+
       <div className="dashboard-grid">
         {dashboardItems.map((item, idx) => (
-          <Link to={item.link} key={idx} className="dashboard-item">
-            {item.icon}
+          <Link to={item.link} key={idx} className="dashboard-card">
+            <div className="icon-wrapper">{item.icon}</div>
             <span>{item.title}</span>
           </Link>
         ))}
       </div>
-      <Logout />
     </div>
   );
 };
