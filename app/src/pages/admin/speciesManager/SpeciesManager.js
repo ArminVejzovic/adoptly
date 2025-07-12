@@ -65,13 +65,15 @@ const SpeciesManager = () => {
     <div className="species-manager">
       <h2>Manage Species</h2>
 
-      <input
-        type="text"
-        placeholder="New species name"
-        value={newSpecies}
-        onChange={(e) => setNewSpecies(e.target.value)}
-      />
-      <button onClick={handleAdd}>Add</button>
+      <div className="add-section">
+        <input
+          type="text"
+          placeholder="New species name"
+          value={newSpecies}
+          onChange={(e) => setNewSpecies(e.target.value)}
+        />
+        <button onClick={handleAdd}>Add</button>
+      </div>
 
       <ul>
         {speciesList.map((sp) => (
@@ -83,13 +85,15 @@ const SpeciesManager = () => {
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                 />
-                <button onClick={() => handleUpdate(sp._id)}>Save</button>
-                <button onClick={() => setEditId(null)}>Cancel</button>
+                <div className="btn-group">
+                  <button onClick={() => handleUpdate(sp._id)}>Save</button>
+                  <button onClick={() => setEditId(null)}>Cancel</button>
+                </div>
               </>
             ) : (
               <>
                 <span>{sp.name}</span>
-                <div>
+                <div className="btn-group">
                   <button onClick={() => { setEditId(sp._id); setEditName(sp.name); }}>Edit</button>
                   <button onClick={() => handleDelete(sp._id)}>Delete</button>
                 </div>

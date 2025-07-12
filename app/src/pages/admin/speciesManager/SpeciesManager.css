@@ -1,85 +1,155 @@
 .species-manager {
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 20px;
-    background: #f1f5f9;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.species-manager h2 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #333;
+}
+
+.species-manager input[type="text"] {
+  width: calc(100% - 120px);
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-right: 12px;
+}
+
+.species-manager .add-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.species-manager button {
+  background-color: #3f51b5;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.species-manager button:hover {
+  background-color: #5c6bc0;
+}
+
+.species-manager ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.species-manager li {
+  background-color: #f9f9f9;
+  border: 1px solid #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.species-manager li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.species-manager li span {
+  font-size: 16px;
+  color: #333;
+  flex: 1;
+}
+
+.species-manager li input[type="text"] {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-right: 12px;
+}
+
+.species-manager .btn-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.species-manager .btn-group button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.25s ease;
+}
+
+.species-manager .btn-group button:nth-child(1) {
+  background-color: #4caf50;
+  color: white;
+}
+
+.species-manager .btn-group button:nth-child(1):hover {
+  background-color: #66bb6a;
+}
+
+.species-manager .btn-group button:nth-child(2) {
+  background-color: #f44336;
+  color: white;
+}
+
+.species-manager .btn-group button:nth-child(2):hover {
+  background-color: #e57373;
+}
+
+.species-manager .btn-group button:nth-child(3) {
+  background-color: #607d8b;
+  color: white;
+}
+
+.species-manager .btn-group button:nth-child(3):hover {
+  background-color: #78909c;
+}
+
+@media (max-width: 600px) {
+  .species-manager li {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .species-manager h2 {
-    text-align: center;
-    color: #1e293b;
-    margin-bottom: 20px;
-  }
-  
+
   .species-manager input[type="text"] {
     width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 16px;
+    margin: 0;
   }
-  
-  .species-manager button {
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    margin: 5px 4px 10px 0;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s ease-in-out;
+
+  .species-manager .add-section {
+    flex-direction: column;
   }
-  
-  .species-manager button:hover {
-    background-color: #2563eb;
+
+  .species-manager .btn-group {
+    flex-direction: column;
+    width: 100%;
   }
-  
-  .species-manager ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
+
+  .species-manager .btn-group button {
+    width: 100%;
   }
-  
-  .species-manager li {
-    background-color: white;
-    border: 1px solid #e2e8f0;
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .species-manager li input[type="text"] {
-    flex-grow: 1;
-    margin-right: 10px;
-    padding: 8px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
-  @media (max-width: 500px) {
-    .species-manager li {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .species-manager button {
-      width: 100%;
-      margin-top: 6px;
-    }
-  
-    .species-manager li input[type="text"] {
-      width: 100%;
-      margin-bottom: 6px;
-    }
-  }
-  
+}
