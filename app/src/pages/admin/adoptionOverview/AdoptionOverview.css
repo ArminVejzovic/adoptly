@@ -14,8 +14,7 @@
     color: #1d3557;
   }
   
-  /* Desktop prikaz (tabela) */
-  @media (min-width: 768px) {
+  @media (min-width: 799px) {
     .overview-table {
       width: 100%;
       border-collapse: collapse;
@@ -43,8 +42,7 @@
     }
   }
   
-  /* Mobilni prikaz (cards) */
-  @media (max-width: 767px) {
+  @media (max-width: 800px) {
     .overview-table {
       display: none;
     }
