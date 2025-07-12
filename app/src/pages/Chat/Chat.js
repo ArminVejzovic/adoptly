@@ -192,7 +192,7 @@ const Chat = () => {
                 placeholder="Type a message..."
                 rows={2}
               />
-              <button onClick={sendMessage}>Send</button>
+              <button className="send-button" onClick={sendMessage}>Send</button>
             </div>
           </>
         ) : ( null )}

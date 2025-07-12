@@ -115,6 +115,7 @@
   padding: 1rem;
   border-top: 2px solid #9fd5d1;
   background: #dff6f5;
+  align-items: center; 
 }
 
 .chat-input textarea {
@@ -154,6 +155,20 @@
   color: #558b84;
   text-align: center;
   padding: 2rem;
+}
+
+.send-button {
+  margin-left: 0.7rem;
+  padding: 0.7rem 1.5rem;
+  background: #2a9d8f;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: auto;
+  height: 50px;
 }
 
 @media (max-width: 768px) {
