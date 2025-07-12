@@ -21,6 +21,15 @@ const Contract = () => {
     fetchContracts();
   }, []);
 
+   const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${day}/${month}/${year}`;
+  };
+
+
   return (
     <div className="contract-manager">
       <h2>Adoption Contracts</h2>
@@ -30,7 +39,7 @@ const Contract = () => {
             <p><strong>Animal:</strong> {contract.application.animal?.name}</p>
             <p><strong>Owner:</strong> {contract.application.animal?.owner.username}</p>
             <p><strong>Requester:</strong> {contract.application.requester.username}</p>
-            <p><strong>Created At:</strong> {new Date(contract.createdAt).toLocaleString()}</p>
+           <p><strong>Created At:</strong> {formatDate(contract.createdAt)}</p>
             <a
                 href={`data:application/pdf;base64,${btoa(
                 new Uint8Array(contract.pdfData.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
