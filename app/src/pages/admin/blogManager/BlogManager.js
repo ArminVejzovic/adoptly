@@ -88,30 +88,49 @@ const BlogManager = () => {
 
       {blogs.map((blog) => (
         <div key={blog._id} className="blog-card">
-          {editMode && editModeId === blog._id ? (
-            <>
-              <input name="title" value={editForm.title} onChange={handleEditChange} />
-              <textarea name="content" value={editForm.content} onChange={handleEditChange} />
-              <input name="tags" value={editForm.tags} onChange={handleEditChange} />
-              <input type="file" name="image" accept="image/*" onChange={handleEditChange} />
+          <h3>{blog.title}</h3>
+          {blog.image && <img src={blog.image} alt="Blog" />}
+          <p>{blog.content}</p>
+          <small>Tags: {blog.tags.join(', ')}</small>
+          <p><em>By: {blog.author?.username}</em></p>
+
+          {editMode && (
+            <button onClick={() => handleEditInit(blog)}>Edit</button>
+          )}
+
+          {editMode && editModeId === blog._id && (
+            <div className="edit-form">
+              <input
+                name="title"
+                value={editForm.title}
+                onChange={handleEditChange}
+                placeholder="Title"
+              />
+              <textarea
+                name="content"
+                value={editForm.content}
+                onChange={handleEditChange}
+                placeholder="Content"
+              />
+              <input
+                name="tags"
+                value={editForm.tags}
+                onChange={handleEditChange}
+                placeholder="Tags (comma separated)"
+              />
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleEditChange}
+              />
 
               <div className="action-buttons">
                 <button onClick={() => handleUpdate(blog._id)}>Update</button>
                 <button onClick={handleEditCancel} className="cancel-btn">Cancel</button>
                 <button onClick={() => handleDelete(blog._id)} className="delete-btn">Delete</button>
               </div>
-            </>
-          ) : (
-            <>
-              <h3>{blog.title}</h3>
-              {blog.image && <img src={blog.image} alt="Blog" />}
-              <p>{blog.content}</p>
-              <small>Tags: {blog.tags.join(', ')}</small>
-              <p><em>By: {blog.author?.username}</em></p>
-              {editMode && (
-                <button onClick={() => handleEditInit(blog)}>Edit</button>
-              )}
-            </>
+            </div>
           )}
         </div>
       ))}
