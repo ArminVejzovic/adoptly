@@ -309,7 +309,7 @@ const GuestDashboard = () => {
 
       {activeTab === 'stats' && stats && (
         <div className="stats-overview">
-          <h3>Site Statistics (Public View)</h3>
+          <h3>Site Statistics</h3>
           <ul>
             <li><strong>Total users:</strong> {stats.userCount}</li>
             <li><strong>Total animals:</strong> {stats.totalAnimals}</li>
@@ -321,7 +321,8 @@ const GuestDashboard = () => {
 
       {activeTab === 'wishlist' && (
         <div className="wishlist-grid">
-          <h3>Your Wishlist (Guest - Local Only)</h3>
+          <h3>Your Wishlist</h3>
+          <br></br>
           {wishlist.length === 0 && <p>Your wishlist is empty.</p>}
           {wishlist.map(item => (
             <div key={item._id} className="gallery-card">
