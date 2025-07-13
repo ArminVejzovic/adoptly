@@ -31,6 +31,8 @@ const AvailableAnimals = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const loggedInUsername = localStorage.getItem('username');
 
+  
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const headers = { Authorization: `Bearer ${token}` };
@@ -47,9 +49,20 @@ const AvailableAnimals = () => {
               `http://localhost:3000/api/interact/stats/${animal._id}`,
               { headers }
             );
-            return { ...animal, stats: statRes.data };
-          })
-        );
+
+            const ratingRes = await axios.get(
+              `http://localhost:3000/api/review/animal/${animal._id}`,
+              { headers }
+            );
+
+    return {
+      ...animal,
+      stats: statRes.data,
+      rating: ratingRes.data
+    };
+  })
+);
+
 
         setAnimals(animalsWithStats);
       } catch (err) {
@@ -324,6 +337,15 @@ const AvailableAnimals = () => {
               <div className="no-image">No Image</div>
             )}
             <h3>{animal.name}</h3>
+            <div className="animal-rating">
+              {[...Array(5)].map((_, index) => (
+                <span key={index}>
+                  {index < Math.round(animal.rating?.averageRating || 0) ? '⭐' : '☆'}
+                </span>
+              ))}
+              {' '}
+              ({animal.rating?.averageRating?.toFixed(1) || '0.0'})
+            </div>
             <p>
               {animal.breed} • {animal.age} years
             </p>
@@ -468,7 +490,9 @@ const AvailableAnimals = () => {
                 </>
               )}
 
+
             <div className="comments-list">
+            
               {comments.map((comment) => {
                 const isOwnComment =
                   comment.user?.username &&
@@ -479,7 +503,7 @@ const AvailableAnimals = () => {
                   <div key={comment._id} className="comment-item">
                     <p>
                       <strong>
-                        {isOwnComment ? 'Me:' : comment.user?.username || 'User'}
+                        {isOwnComment ? 'Me:' : `${comment.user?.username}: ` || 'User'}
                       </strong>{' '}
                       {comment.text}
                     </p>

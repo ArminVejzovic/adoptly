@@ -5,32 +5,26 @@ import AdoptionRequest from '../models/AdoptionRequest.js';
 
 async function validateReviewPermissions(reviewerId, targetUserId, targetAnimalId, reviewerRole) {
   if (targetUserId) {
+    const targetUser = await User.findById(targetUserId);
+    if (!targetUser) return false;
+
     if (reviewerRole === 'user') {
-      const adoption = await AdoptionRequest.findOne({
-        requester: reviewerId,
-        owner: targetUserId,
-        status: 'approved',
-      });
-      return !!adoption;
+      return targetUser.role === 'owner';
     }
     if (reviewerRole === 'owner') {
-      const adoption = await AdoptionRequest.findOne({
-        owner: reviewerId,
-        requester: targetUserId,
-        status: 'approved',
-      });
-      return !!adoption;
+      return targetUser.role === 'user';
     }
     return false;
   }
+
   if (targetAnimalId) {
-    const adoption = await AdoptionRequest.findOne({
-      animal: targetAnimalId,
-      requester: reviewerId,
-      status: 'approved',
-    });
-    return !!adoption;
+    if (reviewerRole === 'user') {
+      const animal = await Animal.findById(targetAnimalId);
+      return !!animal;
+    }
+    return false;
   }
+
   return false;
 }
 
@@ -79,41 +73,16 @@ export const getReviewTargets = async (req, res) => {
     const role = req.user.role;
 
     if (role === 'user') {
-      const requests = await AdoptionRequest.find({
-        requester: userId,
-        status: 'approved',
-      }).populate([
-        { path: 'animal', select: 'name' },
-        { path: 'owner', select: 'username' }
-      ]);
+      // User vidi sve životinje i sve vlasnike
+      const animals = await Animal.find({}).select('name');
+      const owners = await User.find({ role: 'owner' }).select('username');
 
-      const animals = [];
-      const ownersMap = new Map();
-
-      for (const req of requests) {
-        if (req.animal) animals.push(req.animal);
-        if (req.owner) ownersMap.set(req.owner._id.toString(), req.owner);
-      }
-
-      const owners = Array.from(ownersMap.values());
       return res.json({ animals, owners });
     }
 
     if (role === 'owner') {
-      const requests = await AdoptionRequest.find({
-        owner: userId,
-        status: 'approved',
-      }).populate('requester', 'username email');
-
-
-      const usersMap = new Map();
-      for (const req of requests) {
-        if (req.requester) {
-          usersMap.set(req.requester._id.toString(), req.requester);
-        }
-      }
-
-      const users = Array.from(usersMap.values());
+      // Owner vidi sve usere
+      const users = await User.find({ role: 'user' }).select('username email');
 
       return res.json({ users });
     }
@@ -137,4 +106,24 @@ export const getMyReviews = async (req, res) => {
     res.status(500).json({ message: 'Error fetching reviews.' });
   }
 };
+
+export const getAnimalReviewStats = async (req, res) => {
+  try {
+    const { animalId } = req.params;
+
+    const reviews = await Review.find({ targetAnimal: animalId });
+
+    const totalReviews = reviews.length;
+    const averageRating =
+      totalReviews > 0
+        ? reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        : 0;
+
+    res.json({ averageRating, totalReviews });
+  } catch (err) {
+    console.error('Error fetching animal review stats:', err);
+    res.status(500).json({ message: 'Error fetching review stats' });
+  }
+};
+
 

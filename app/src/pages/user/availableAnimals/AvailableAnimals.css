@@ -176,6 +176,7 @@
   cursor: pointer;
   transition: color 0.3s ease;
   line-height: 1;
+  z-index: 10;
 }
 .close-button:hover {
   color: #558b2f;
@@ -246,7 +247,7 @@ textarea:focus,
 
 .comments-list {
   margin-top: 24px;
-  max-height: 180px;
+  max-height: 250px;
   overflow-y: auto;
   padding-right: 8px;
   border-top: 1px solid #a5d6a7;
