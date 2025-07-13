@@ -35,11 +35,27 @@ const MyAnimals = () => {
   const fetchAnimals = async () => {
     try {
       const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
       const res = await axios.get(
         'http://localhost:3000/api/owner/my-animals',
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setAnimals(res.data);
+
+      const animalsWithStats = await Promise.all(
+        res.data.map(async (animal) => {
+
+          const ratingRes = await axios.get(
+            `http://localhost:3000/api/review/animal/${animal._id}`,
+            { headers }
+          );
+
+          return {
+            ...animal,
+            rating: ratingRes.data 
+          };
+        })
+      );
+      setAnimals(animalsWithStats);
     } catch (error) {
       console.error('Error fetching animals:', error);
     }
@@ -265,6 +281,16 @@ const MyAnimals = () => {
               <div className="no-image">No Image</div>
             )}
             <h3>{animal.name}</h3>
+            <div className="animal-rating">
+              {[...Array(5)].map((_, index) => (
+                <span key={index}>
+                  {index < Math.round(animal.rating?.averageRating || 0) ? '⭐' : '☆'}
+                </span>
+              ))}
+              {' '}
+              ({animal.rating?.averageRating?.toFixed(1) || '0.0'}) 
+            </div>
+
             <div className="animal-meta">
               <span>👍 {animal.stats?.likes || 0}</span>
               <span>💬 {animal.stats?.comments || 0}</span>
