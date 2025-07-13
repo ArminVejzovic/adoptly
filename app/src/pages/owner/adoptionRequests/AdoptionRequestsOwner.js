@@ -59,6 +59,7 @@ const AdoptionRequests = () => {
               <Link to={`/profile/${req.requester?.username}`}>
                 <p className="requester-username">{req.requester?.username}</p>
               </Link>
+
             </div>
             <p><strong>Message:</strong> {req.message || 'No message'}</p>
             <p><strong>Status:</strong> {req.status}</p>

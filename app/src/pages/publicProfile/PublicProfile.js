@@ -1,69 +1,80 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ReportButton from '../../components/reportButton/ReportButton.js';
-import './PublicProfile.css';
+import './PublicProfile.css'; 
 
 const PublicProfile = () => {
   const { username } = useParams();
   const [user, setUser] = useState(null);
+  const [reviewStats, setReviewStats] = useState({ averageRating: 0, totalReviews: 0 });
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(
-          `http://localhost:3000/api/profile/${username}`,
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
-        setUser(response.data);
-        
+        const res = await axios.get(`http://localhost:3000/api/profile/${username}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(res.data);
       } catch (error) {
         console.error('Error fetching public profile:', error);
       }
     };
-    fetchProfile();
+
+    if (username) fetchProfile();
   }, [username]);
 
-  if (!user) return <div className="loading">Loading profile...</div>;
+  useEffect(() => {
+    const fetchReviewsStats = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`http://localhost:3000/api/profile/reviews/${user._id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setReviewStats(res.data);
+      } catch (error) {
+        console.error('Error fetching review stats:', error);
+      }
+    };
+
+    if (user && username) fetchReviewsStats();
+  }, [user, username]);
+
+  if (!user) {
+    return <div className="loading">Loading profile...</div>;
+  }
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
+      <div className="section">
+        <h2>User Info</h2>
         {user.profilePicture ? (
-          <img
-            src={user.profilePicture}
-            alt={user.username}
-            className="profile-picture"
-          />
+          <img src={user.profilePicture} alt="Profile" className="profile-picture" />
         ) : (
           <div className="no-picture">No Picture</div>
         )}
-        <h2>{user.username}</h2>
-        {user.isVerified && <div className="verified-badge">Verified ✓</div>}
+        <div className="profile-rating">
+          <strong>Rating:</strong>{' '}
+          {[...Array(5)].map((_, index) => (
+            <span key={index}>
+              {index < Math.round(reviewStats.averageRating) ? '⭐' : '☆'}
+            </span>
+          ))}{' '}
+          ({reviewStats.averageRating} / 5)
+        </div>
+        <h3>{user.username}</h3>
       </div>
 
-      <div className="profile-details">
+      <div className="section">
+        <h2>Account Details</h2>
         <p><strong>Email:</strong> {user.email}</p>
         <p><strong>Role:</strong> {user.role}</p>
-        <p><strong>Status:</strong> {user.isVerified ? 'Verified' : 'Unverified'}</p>
-        {user.isFlagged && (
-          <div className="flagged-warning">
-            <strong>Flagged:</strong> {user.flaggedReason || 'Flagged without a reason'}
-          </div>
-        )}
       </div>
 
-      <div className="profile-timestamps">
-        <p>Created: {new Date(user.createdAt).toLocaleDateString()}</p>
-        <p>Last Update: {new Date(user.updatedAt).toLocaleDateString()}</p>
-      </div>
-      
-
-      <div className="profile-actions">
-        <ReportButton reportedType="user" reportedId={user._id} />
+      <div className="section">
+        <h2>Meta Info</h2>
+        <p><strong>Created:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
+        <p><strong>Last Update:</strong> {new Date(user.updatedAt).toLocaleDateString()}</p>
       </div>
     </div>
   );

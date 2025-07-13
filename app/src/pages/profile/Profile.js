@@ -7,8 +7,6 @@ const Profile = () => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({
     username: '',
-    bio: '',
-    location: '',
     profilePicture: null
   });
   const [passwordData, setPasswordData] = useState({
@@ -43,8 +41,6 @@ const Profile = () => {
         setUser(response.data);
         setFormData({
           username: response.data.username,
-          bio: response.data.bio || '',
-          location: response.data.location || '',
           profilePicture: null
         });
       } catch (error) {
@@ -70,8 +66,6 @@ const Profile = () => {
       const token = localStorage.getItem('token');
       const data = new FormData();
       data.append('username', formData.username);
-      data.append('bio', formData.bio);
-      data.append('location', formData.location);
       if (formData.profilePicture) {
         data.append('profilePicture', formData.profilePicture);
       }

@@ -27,22 +27,6 @@ export const deleteProfile = async (req, res) => {
   }
 };
 
-export const updateBioLocation = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    const { bio, location } = req.body;
-    if (bio !== undefined) user.bio = bio;
-    if (location !== undefined) user.location = location;
-
-    await user.save();
-    res.status(200).json({ message: 'Bio and location updated' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
-  }
-};
 
 export const changePassword = async (req, res) => {
   try {
@@ -53,7 +37,7 @@ export const changePassword = async (req, res) => {
     const isMatch = await user.comparePassword(currentPassword);
     if (!isMatch) return res.status(401).json({ message: 'Incorrect current password' });
 
-    user.password = newPassword; // hash će se odraditi u pre-save hook-u
+    user.password = newPassword;
     await user.save();
 
     res.status(200).json({ message: 'Password changed successfully' });
@@ -105,11 +89,9 @@ export const updateProfile = async (req, res) => {
 export const getUserReviewsStats = async (req, res) => {
   const { userId } = req.params;
   try {
-    // Provjera da li postoji korisnik
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Agregacija review-a za korisnika
     const stats = await Review.aggregate([
       { $match: { targetUser: user._id } },
       {

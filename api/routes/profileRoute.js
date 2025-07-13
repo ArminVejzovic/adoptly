@@ -5,7 +5,6 @@ import {
   deleteProfile,
   removeProfilePicture,
   changePassword,
-  updateBioLocation,
   getUserReviewsStats
 } from '../controllers/ProfileController.js';
 import { protect } from '../middleware/authMiddleware.js';
@@ -18,7 +17,6 @@ router.put('/update', protect, upload.single('profilePicture'), updateProfile);
 router.delete('/delete', protect, deleteProfile);
 router.put('/remove-picture', protect, removeProfilePicture);
 router.put('/change-password', protect, changePassword);
-router.put('/bio-location', protect, updateBioLocation);
 router.get('/reviews/:userId', getUserReviewsStats);
 
 export default router;
