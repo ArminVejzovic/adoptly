@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './auth.css';
 import { Link } from 'react-router-dom';
-import ForgotPassword from './ForgotPassword';
 
 const LoginPage = () => {
   const BASE_URL = process.env.REACT_APP_BACKEND_URL;

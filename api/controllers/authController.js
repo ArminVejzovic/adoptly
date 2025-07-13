@@ -51,6 +51,15 @@ export const loginUser = async (req, res) => {
         return res.status(401).json({ field: 'email', message: 'No user found with that email or username' });
         }
 
+        if (user.isFlagged) {
+          return res
+            .status(403)
+            .json({
+              field: 'general',
+              message: 'Your account has been banned by an administrator.',
+            });
+        }
+
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
         return res.status(401).json({ field: 'password', message: 'Incorrect password' });
