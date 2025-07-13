@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Profile.css';
+import './Profile.css'
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -147,9 +147,8 @@ const Profile = () => {
               {index < Math.round(reviewStats.averageRating) ? '⭐' : '☆'}
             </span>
           ))}{' '}
-          ({reviewStats.averageRating} / 5) — {reviewStats.totalReviews} reviews
+          ({reviewStats.averageRating} / 5)
         </div>
-
         {editMode ? (
           <>
             <label>Username:</label>
@@ -216,13 +215,13 @@ const Profile = () => {
       <div className="section profile-buttons">
         {editMode ? (
           <>
-            <button className="save-button" onClick={handleUpdate}>💾 Save Changes</button>
-            <button className="cancel-button" onClick={() => setEditMode(false)}>❌ Cancel</button>
+            <button className="save-button-edit" onClick={handleUpdate}>💾 Save Changes</button>
+            <button className="cancel-button-edit" onClick={() => setEditMode(false)}>❌ Cancel</button>
           </>
         ) : (
-          <button className="edit-button" onClick={() => setEditMode(true)}>✏️ Edit Profile</button>
+          <button className="edit-button-edit" onClick={() => setEditMode(true)}>✏️ Edit Profile</button>
         )}
-        <button className="delete-button" onClick={handleDelete}>🗑️ Delete Account</button>
+        <button className="delete-button-edit" onClick={handleDelete}>🗑️ Delete Account</button>
       </div>
     </div>
   );
