@@ -92,11 +92,6 @@ const Chat = () => {
     };
 
     socket.emit('sendMessage', payload);
-    setMessages(prev => [...prev, {
-      ...payload,
-      sender: { _id: currentUser._id },
-      createdAt: new Date().toISOString(),
-    }]);
     setText('');
   };
 
