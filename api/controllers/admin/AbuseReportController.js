@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import AbuseReport from '../../models/AbuseReport.js';
+import User from '../../models/User.js';
+import Notification from '../../models/Notifications.js';
 
 export const createAbuseReport = async (req, res) => {
   try {
@@ -24,15 +26,32 @@ export const createAbuseReport = async (req, res) => {
       contextId,
     });
 
+    const admins = await User.find({ role: 'admin' }).select('_id');
+
+    const content = `New abuse report created for ${targetModel}`; 
+
+    const notifications = admins.map((admin) => ({
+      recipient: admin._id,
+      type: 'abuseReport',
+      content,
+      link: '/admin/reports',
+      relatedUser: req.user.id,
+      relatedEntity: report._id,
+      entityModel: 'AbuseReport',
+    }));
+
+    await Notification.insertMany(notifications);
+
     res.status(201).json(report);
+
   } catch (error) {
+    console.error('Failed to create abuse report:', error);
     res.status(500).json({
       message: 'Failed to create abuse report',
       error: error.message,
     });
   }
 };
-
 
 export const getAllAbuseReports = async (req, res) => {
   try {
@@ -43,6 +62,7 @@ export const getAllAbuseReports = async (req, res) => {
 
     const reports = await AbuseReport.find(filter)
       .populate('reporter', 'username email')
+      .sort({ createdAt: -1 })
       .lean();
 
     for (const report of reports) {

@@ -83,6 +83,7 @@ export const addComment = async (req, res) => {
   const populated = await comment.populate('user', 'username');
   res.status(201).json(populated);
 };
+
 export const deleteComment = async (req, res) => {
   const { commentId } = req.params;
   const userId = req.user._id;
