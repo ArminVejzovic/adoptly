@@ -177,6 +177,42 @@
   outline: none;
 }
 
+.admin-room-item button {
+  background: #ffffff;
+  border: 1px solid #2a9d8f;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #004d40;
+  transition: background 0.25s, color 0.25s;
+}
+
+.admin-room-item button:hover {
+  background: #a7e2dd;
+  color: #00332d;
+}
+
+.admin-room-item .delete-button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.1rem;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.admin-room-item .delete-button:hover {
+  color: darkred;
+}
+
+.admin-room-item .active-room {
+  background: #2a9d8f;
+  color: #fff;
+  font-weight: 600;
+}
+
+
 
 @media (max-width: 768px) {
   .admin-chat-container {

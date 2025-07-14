@@ -3,10 +3,6 @@ import ChatRoom from '../../models/ChatRoom.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const generateTitle = (text) => {
-  const words = text.trim().split(/\s+/).slice(0, 5).join(' ');
-  return words || 'Novi Chat';
-};
 
 export const sendAdminMessage = async (req, res) => {
   const { roomId, question } = req.body;
@@ -47,9 +43,7 @@ export const sendAdminMessage = async (req, res) => {
 };
 
 export const createRoom = async (req, res) => {
-  const { firstQuestion } = req.body;
-  const title = generateTitle(firstQuestion || 'Novi Chat');
-  const room = new ChatRoom({ title, messages: [] });
+  const room = new ChatRoom({ title: 'Hello!', messages: [] });
   await room.save();
   res.json(room);
 };

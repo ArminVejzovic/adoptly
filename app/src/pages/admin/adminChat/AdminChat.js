@@ -30,9 +30,7 @@ const AdminChat = () => {
     try {
       let roomId = currentRoomId;
       if (!roomId) {
-        const createRes = await axios.post('http://localhost:3000/api/adminchat/rooms', {
-          firstQuestion: question,
-        });
+        const createRes = await axios.post('http://localhost:3000/api/adminchat/rooms');
         roomId = createRes.data._id;
         setCurrentRoomId(roomId);
         await fetchRooms();
@@ -67,9 +65,7 @@ const AdminChat = () => {
   };
 
   const createNewRoom = async () => {
-    const createRes = await axios.post('http://localhost:3000/api/adminchat/rooms', {
-      firstQuestion: 'Hello!',
-    });
+    const createRes = await axios.post('http://localhost:3000/api/adminchat/rooms');
     const roomId = createRes.data._id;
     await fetchRooms();
     await fetchRoom(roomId);
@@ -105,7 +101,12 @@ const AdminChat = () => {
         <ul className="admin-room-list">
             {rooms.map((r) => (
             <li key={r._id} className="admin-room-item">
-                <button onClick={() => selectRoom(r._id)}>{r.title}</button>
+                <button
+                  className={r._id === currentRoomId ? 'active-room' : ''}
+                  onClick={() => selectRoom(r._id)}
+                >
+                  {r.title}
+                </button>
                 <button onClick={() => deleteRoom(r._id)} className="delete-button">🗑</button>
             </li>
             ))}
