@@ -73,7 +73,7 @@ const NotificationBell = () => {
             <button onClick={markAllAsRead} className="mark-all-btn">Mark all as read</button>
           )}
         </div>
-        {notifications.slice(0, 5).map((n) => (
+        {notifications.map((n) => (
           <div key={n._id} className={`notif-item ${n.read ? '' : 'unread'}`}>
             <p>{n.content}</p>
             <a
