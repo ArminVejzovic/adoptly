@@ -117,33 +117,6 @@ export const deleteAnimal = async (req, res) => {
     }
   };
 
-export const toggleLike = async (req, res) => {
-  const { animalId } = req.params;
-  const userId = req.user._id;
-
-  const existing = await Like.findOne({ user: userId, animal: animalId });
-  if (existing) {
-    await existing.deleteOne();
-    return res.json({ liked: false, message: 'Disliked' });
-  } else {
-    await Like.create({ user: userId, animal: animalId });
-    return res.json({ liked: true, message: 'Liked' });
-  }
-};
-
-export const toggleWishlist = async (req, res) => {
-  const { animalId } = req.params;
-  const userId = req.user._id;
-
-  const existing = await WishList.findOne({ user: userId, animal: animalId });
-  if (existing) {
-    await existing.deleteOne();
-    return res.json({ saved: false, message: 'Removed from wishlist' });
-  } else {
-    await WishList.create({ user: userId, animal: animalId });
-    return res.json({ saved: true, message: 'Saved to wishlist' });
-  }
-};
 
 export const addComment = async (req, res) => {
   const { animalId } = req.params;

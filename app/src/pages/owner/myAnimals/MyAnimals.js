@@ -190,15 +190,7 @@ const MyAnimals = () => {
     }
   };
 
-  const handleToggleLike = async () => {
-    const token = localStorage.getItem('token');
-    await axios.post(
-      `http://localhost:3000/api/owner/interact/like/${selectedAnimal._id}`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    openAnimal(selectedAnimal, true);
-  };
+ 
 
   const handleToggleWishlist = async () => {
     const token = localStorage.getItem('token');
@@ -450,12 +442,7 @@ const handleDeleteAdditionalImage = async (imageId) => {
                   ) : (
                     <button className="archive-button" onClick={() => handleArchive(selectedAnimal._id)}>Archive</button>
                   )}
-                  <button className="like-button" onClick={handleToggleLike}>
-                    👍 Like
-                  </button>
-                  <button className="save-button" onClick={handleToggleWishlist}>
-                    💾 Save
-                  </button>
+
                 </div>
               </>
             )}

@@ -5,8 +5,6 @@ import {
   archiveAnimal,
   unarchiveAnimal,
   updateAnimal,
-  toggleLike,
-  toggleWishlist,
   addComment,
   deleteComment,
   getComments,
@@ -26,8 +24,6 @@ router.put('/animals/:id/archive', protect, authorizeRoles('owner'), archiveAnim
 router.put('/animals/:id/unarchive', protect, authorizeRoles('owner'), unarchiveAnimal);
 router.put('/animals/:id', protect, authorizeRoles('owner'), updateAnimal);
 
-router.post('/interact/like/:animalId', protect, authorizeRoles('owner'), toggleLike);
-router.post('/interact/wishlist/:animalId', protect, authorizeRoles('owner'), toggleWishlist);
 router.post('/interact/comment/:animalId', protect, authorizeRoles('owner'), addComment);
 router.delete('/interact/comment/:commentId', protect, authorizeRoles('owner'), deleteComment);
 router.get('/interact/comments/:animalId', protect, authorizeRoles('owner'), getComments);
