@@ -578,7 +578,7 @@ const AvailableAnimals = () => {
               value={commentReportDescription}
               onChange={(e) => setCommentReportDescription(e.target.value)}
             />
-            <button onClick={handleSubmitCommentReport}>Submit Report</button>
+            <button className="report-btn" onClick={handleSubmitCommentReport}>Submit Report</button>
             {commentReportFeedback && (
               <p className="feedback">{commentReportFeedback}</p>
             )}
@@ -596,7 +596,7 @@ const AvailableAnimals = () => {
               value={reportDescription}
               onChange={(e) => setReportDescription(e.target.value)}
             />
-            <button onClick={handleSubmitReport}>Submit Report</button>
+            <button className="report-btn" onClick={handleSubmitReport}>Submit Report</button>
             {reportFeedback && (
               <p className="feedback">{reportFeedback}</p>
             )}
