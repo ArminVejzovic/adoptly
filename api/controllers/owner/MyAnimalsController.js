@@ -20,6 +20,7 @@ export const getMyAnimals = async (req, res) => {
 
       const additionalImages = await AnimalImage.find({ animal: animal._id }).lean();
       animal.additionalImages = additionalImages.map(img => ({
+        _id: img._id,
         contentType: img.image.contentType,
         base64: img.image.data.toString('base64')
       }));
@@ -198,3 +199,75 @@ export const getAnimalStats = async (req, res) => {
 
   res.json({ likes, comments, saves });
 };
+
+export const uploadProfileImage = async (req, res) => {
+  try {
+    const animal = await Animal.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
+    if (!animal) return res.status(404).json({ message: 'Animal not found' });
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image uploaded' });
+    }
+
+    animal.profileImage = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    };
+
+    await animal.save();
+    res.status(200).json({ message: 'Profile image updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const addAnimalImages = async (req, res) => {
+  try {
+    const animal = await Animal.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
+    if (!animal) return res.status(404).json({ message: 'Animal not found' });
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: 'No images uploaded' });
+    }
+
+    const imageDocs = req.files.map((file) => ({
+      animal: animal._id,
+      image: {
+        data: file.buffer,
+        contentType: file.mimetype,
+      },
+    }));
+
+    await AnimalImage.insertMany(imageDocs);
+    res.status(201).json({ message: 'Images added successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteAnimalImage = async (req, res) => {
+  try {
+    const image = await AnimalImage.findById(req.params.imageId).populate('animal');
+    if (!image) return res.status(404).json({ message: 'Image not found' });
+
+    if (image.animal.owner.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    await image.deleteOne();
+    res.status(200).json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+

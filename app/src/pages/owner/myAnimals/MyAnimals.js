@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -25,6 +25,14 @@ const MyAnimals = () => {
   const [commentBeingReported, setCommentBeingReported] = useState(null);
   const [commentReportDescription, setCommentReportDescription] = useState('');
   const [commentReportFeedback, setCommentReportFeedback] = useState(null);
+  const [newProfileImage, setNewProfileImage] = useState(null);
+  const [newProfileImagePreview, setNewProfileImagePreview] = useState(null);
+  const [newAdditionalImages, setNewAdditionalImages] = useState([]);
+  const profileImageInputRef = useRef(null);
+  const additionalImagesInputRef = useRef(null);
+
+
+
 
   const loggedInUsername = localStorage.getItem('username');
 
@@ -260,6 +268,92 @@ const MyAnimals = () => {
   }
 };
 
+const handleProfileImageUpload = async () => {
+  if (!newProfileImage) return;
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  formData.append('profileImage', newProfileImage);
+
+  try {
+    await axios.put(
+      `http://localhost:3000/api/owner/animals/${selectedAnimal._id}/profile-image`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    setNewProfileImage(null);
+    setNewProfileImagePreview(null);
+    if (profileImageInputRef.current) {
+      profileImageInputRef.current.value = '';
+    }
+
+    fetchAnimals();
+    openAnimal(selectedAnimal, true);
+  } catch (error) {
+    console.error('Error uploading profile image:', error);
+  }
+};
+
+
+const handleAdditionalImagesUpload = async () => {
+  if (newAdditionalImages.length === 0) return;
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  newAdditionalImages.forEach((file) => {
+    formData.append('images', file);
+  });
+
+  try {
+    await axios.post(
+      `http://localhost:3000/api/owner/animals/${selectedAnimal._id}/images`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    setNewAdditionalImages([]);
+    if (additionalImagesInputRef.current) {
+      additionalImagesInputRef.current.value = '';
+    }
+
+    fetchAnimals();
+    openAnimal(selectedAnimal, true);
+  } catch (error) {
+    console.error('Error uploading additional images:', error);
+  }
+};
+
+
+
+const handleDeleteAdditionalImage = async (imageId) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    await axios.delete(
+      `http://localhost:3000/api/owner/animal-images/${imageId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    setSelectedAnimal((prev) => ({
+      ...prev,
+      additionalImages: prev.additionalImages.filter((img) => img._id !== imageId),
+    }));
+
+  } catch (error) {
+    console.error('Error deleting additional image:', error);
+  }
+};
 
 
   return (
@@ -429,6 +523,66 @@ const MyAnimals = () => {
                   value={editFormData.description}
                   onChange={handleEditChange}
                 />
+                <div>
+                  <label>New Profile Image:</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={profileImageInputRef}
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setNewProfileImage(file);
+                        setNewProfileImagePreview(URL.createObjectURL(file));
+                      }
+                    }}
+                  />
+                  {newProfileImagePreview && (
+                    <img
+                      src={newProfileImagePreview}
+                      alt="New Profile Preview"
+                      className="modal-profile-image"
+                    />
+                  )}
+                  <button className="upload-button" onClick={handleProfileImageUpload}>Upload Profile Image</button>
+                </div>
+                
+                <div>
+                  <label>Additional Images:</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={additionalImagesInputRef}
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      setNewAdditionalImages(files);
+                    }}
+                  />
+                  <button  className="upload-button" onClick={handleAdditionalImagesUpload}>Upload Additional Images</button>
+                </div>
+
+                <div className="additional-images">
+                  <h4>Additional Images:</h4>
+                  {selectedAnimal.additionalImages?.length > 0 ? (
+                    selectedAnimal.additionalImages.map((img, index) => (
+                      <div key={index} className="additional-image-item">
+                        <img
+                          src={`data:${img.contentType};base64,${img.base64}`}
+                          alt={`Additional ${index}`}
+                          className="additional-image"
+                        />
+                        <button onClick={() => handleDeleteAdditionalImage(img._id)}>
+                          🗑️
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No additional images.</p>
+                  )}
+                </div>
+
+
                 <div className="map-wrapper">
                   <label>New Location:</label>
                   <MapContainer

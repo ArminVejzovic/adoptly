@@ -261,4 +261,62 @@
   font-weight: bold;
 }
   
+.additional-images {
+  margin-top: 1rem;
+}
+.additional-image-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.additional-image {
+  width: 80px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  border-radius: 6px;
+}
   
+button {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button.upload-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+button.upload-button:hover {
+  background-color: #45a049;
+}
+
+button.edit-button {
+  background-color: #007bff;
+  color: white;
+  margin-right: 8px;
+}
+
+button.edit-button:hover {
+  background-color: #0056b3;
+}
+
+button.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+button.delete-button:hover {
+  background-color: #b02a37;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  color: #666666;
+}
