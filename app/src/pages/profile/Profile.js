@@ -52,11 +52,20 @@ const Profile = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === 'profilePicture') {
-      setFormData(prev => ({ ...prev, profilePicture: files[0] }));
-    } else if (name === 'currentPassword' || name === 'newPassword') {
+      if (!files || files.length === 0) {
+        setFormData(prev => ({ ...prev, profilePicture: null }));
+        return;
+      }
+
+      const file = files[0];
+      setFormData(prev => ({ ...prev, profilePicture: file }));
+    } 
+    else if (name === 'currentPassword' || name === 'newPassword') {
       setPasswordData(prev => ({ ...prev, [name]: value }));
-    } else {
+    } 
+    else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
   };

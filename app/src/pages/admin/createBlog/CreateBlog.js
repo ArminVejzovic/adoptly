@@ -17,14 +17,19 @@ const CreateBlog = () => {
     const { name, value, files } = e.target;
 
     if (name === 'image') {
+      if (!files || files.length === 0) {
+        setForm(prev => ({ ...prev, image: null, imagePreview: null }));
+        return;
+      }
+
       const file = files[0];
-      setForm({
-        ...form,
+      setForm(prev => ({
+        ...prev,
         image: file,
         imagePreview: URL.createObjectURL(file),
-      });
+      }));
     } else {
-      setForm({ ...form, [name]: value });
+      setForm(prev => ({ ...prev, [name]: value }));
     }
 
     setError('');

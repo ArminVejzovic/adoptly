@@ -52,30 +52,50 @@ const AddAnimal = () => {
   const profileImageRef = useRef(null);
   const imagesRef = useRef(null);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+
     if (name === 'profileImage') {
+      if (!files || files.length === 0) {
+        setFormData((prev) => ({
+          ...prev,
+          profileImage: null,
+          profileImagePreview: null,
+        }));
+        return;
+      }
+
       const file = files[0];
-      setFormData({
-        ...formData,
+      setFormData((prev) => ({
+        ...prev,
         profileImage: file,
         profileImagePreview: URL.createObjectURL(file),
-      });
-    } else if (name === 'images') {
-      const newFiles = Array.from(files);
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
-      setFormData(prev => ({
+      }));
+    } 
+    else if (name === 'images') {
+      if (!files || files.length === 0) {
+        return;
+      }
+
+      const newFiles = Array.from(files).filter(f => !!f);
+      if (newFiles.length === 0) return;
+
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+      setFormData((prev) => ({
         ...prev,
         images: [...prev.images, ...newFiles],
         imagePreviews: [...prev.imagePreviews, ...newPreviews],
       }));
-    } else {
-      setFormData({
-        ...formData,
+    } 
+    else {
+      setFormData((prev) => ({
+        ...prev,
         [name]: type === 'checkbox' ? checked : value,
-      });
+      }));
     }
   };
+
 
   const removeImage = index => {
     setFormData(prev => {
@@ -121,6 +141,8 @@ const AddAnimal = () => {
       });
 
       navigate('/owner-dashboard');
+      profileImageRef.current.value = '';
+      imagesRef.current.value = '';
     } catch (error) {
       console.error('Error while adding animal:', error);
     }
