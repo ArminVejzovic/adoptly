@@ -623,7 +623,7 @@ const handleDeleteAdditionalImage = async (imageId) => {
                             className="report-comment"
                             onClick={() => setCommentBeingReported(comment)}
                           >
-                            🚩 Report
+                            🚩
                           </button>
                         )}
                       </div>

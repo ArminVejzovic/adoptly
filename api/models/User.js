@@ -13,23 +13,7 @@ const userSchema = new mongoose.Schema({
   },
 
   profilePicture: { type: String, default: '' },
-  bio: { type: String },
-  location: { type: String },
-
-  isVerified: { type: Boolean, default: false },
   isFlagged: { type: Boolean, default: false },
-  flaggedReason: { type: String },
-
-  favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Animal' }],
-  savedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-  likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
-
-  notifications: [{
-    message: String,
-    link: String,
-    read: { type: Boolean, default: false },
-    createdAt: { type: Date, default: Date.now }
-  }],
 
 }, { timestamps: true });
 
