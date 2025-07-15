@@ -251,10 +251,14 @@ const GuestDashboard = () => {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    addToWishlist(animal);
+                    wishlist.find(item => item._id === animal._id)
+                      ? removeFromWishlist(animal._id)
+                      : addToWishlist(animal);
                   }}
                 >
-                  Add to Wishlist
+                  {wishlist.find(item => item._id === animal._id)
+                    ? '✓ Saved'
+                    : 'Add to Wishlist'}
                 </button>
               </div>
             ))}
@@ -319,26 +323,27 @@ const GuestDashboard = () => {
         </div>
       )}
 
-      {activeTab === 'wishlist' && (
-        <div className="wishlist-grid">
-          <h3>Your Wishlist</h3>
-          <br></br>
-          {wishlist.length === 0 && <p>Your wishlist is empty.</p>}
-          {wishlist.map(item => (
-            <div key={item._id} className="gallery-card">
-              <h3>{item.name}</h3>
-              {item.profileImage?.base64 && (
-                <img
-                  src={bufferToBase64(item.profileImage)}
-                  alt={item.name}
-                />
-              )}
-              <p><strong>Age:</strong> {item.age}</p>
-              <p><strong>Species:</strong> {item.species?.name}</p>
-              <button onClick={() => removeFromWishlist(item._id)}>Remove</button>
-            </div>
-          ))}
-        </div>
+     {activeTab === 'wishlist' && (
+        <>
+          <h3 className="wishlist-title">Your Wishlist</h3>
+          <div className="wishlist-grid">
+            {wishlist.length === 0 && <p>Your wishlist is empty.</p>}
+            {wishlist.map(item => (
+              <div key={item._id} className="gallery-card">
+                <h3>{item.name}</h3>
+                {item.profileImage?.base64 && (
+                  <img
+                    src={bufferToBase64(item.profileImage)}
+                    alt={item.name}
+                  />
+                )}
+                <p><strong>Age:</strong> {item.age}</p>
+                <p><strong>Species:</strong> {item.species?.name}</p>
+                <button onClick={() => removeFromWishlist(item._id)}>Remove</button>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

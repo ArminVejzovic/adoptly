@@ -16,7 +16,6 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-/* === Banner === */
 .guest-banner {
   background-color: #ffe9b3;
   padding: 12px 18px;
@@ -35,7 +34,6 @@ h2 {
   font-weight: bold;
 }
 
-/* === Header actions === */
 .guest-header-actions {
   display: flex;
   justify-content: center;
@@ -57,7 +55,6 @@ h2 {
   background-color: #1e8274;
 }
 
-/* === Tabs === */
 .tab-buttons {
   display: flex;
   justify-content: center;
@@ -67,25 +64,25 @@ h2 {
 }
 
 .tab-buttons button {
-  background-color: #f1f1f1;
+  background-color: #e0e0e0;
   border: none;
   padding: 10px 20px;
-  cursor: pointer;
   font-weight: 600;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #264653;
 }
 
 .tab-buttons button:hover {
-  background-color: #ddd;
+  background-color: #ccc;
 }
 
 .tab-buttons .active {
   background-color: #2a9d8f;
-  color: #fff;
+  color: white;
 }
 
-/* === Filters === */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -109,9 +106,23 @@ h2 {
   border-color: #2a9d8f;
 }
 
-/* === Gallery === */
 .gallery-container {
   padding: 0 10px;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.wishlist-title {
+  text-align: center;
+  font-size: 1.6rem;
+  margin: 1.5rem 0 1rem;
+  color: #2a9d8f;
 }
 
 .gallery-grid, .wishlist-grid {
@@ -121,6 +132,7 @@ h2 {
 }
 
 .gallery-card {
+  position: relative;
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
@@ -169,13 +181,11 @@ h2 {
   background-color: #d1583f;
 }
 
-/* === Wishlist === */
 .wishlist-grid h3 {
   text-align: center;
   margin-bottom: 1rem;
 }
 
-/* === Blog Cards === */
 .blogs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
@@ -271,4 +281,17 @@ h2 {
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 1rem;
+}
+
+.saved-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #2a9d8f;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
